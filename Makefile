@@ -25,6 +25,14 @@ OBJ			=	$(SRC:%.c=%.o)
 
 INC			= inc/
 
+#OS
+UNAME := $(shell uname)
+ifeq ($(UNAME), Linux)
+    O_FLAGS = linux
+else
+    O_FLAGS = -lmlx -L/usr/X11/lib -lXext -lX11
+endif
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
@@ -32,7 +40,7 @@ $(NAME): $(OBJ)
 	@make --silent -C $(LIBFT_DIR)
 	@echo "$(GREEN)libft successfully compiled.$(COLOUR_END)"
 	@echo "$(BLACK)Compiling $(NAME)...$(COLOUR_END)"
-	@$(CC) $(CFLAGS) -o $(@) -I/usr/local/include $(^) $(LIBFT_A) -lreadline
+	@$(CC) $(CFLAGS) -o $(@) -I/usr/local/include $(^) $(O_FLAGS) $(LIBFT_A)
 	@echo "$(GREEN)$(NAME) successfully compiled.$(COLOUR_END)"
 
 clean:
