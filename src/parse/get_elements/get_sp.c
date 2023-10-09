@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:15:46 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:33:06 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:08:47 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_sphere	*new_sp(char **array)
 	if (!new)
 		return (NULL);
 	new->pos = get_vector(array[0]);
-	if (!new->pos || !is_double(array[1]))
+	if (!new->pos || !is_double(array[1]) || ft_atoi_dbl(array[1]) <= 0)
 	{
 		free(new);
 		return (NULL);

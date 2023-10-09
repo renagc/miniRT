@@ -6,22 +6,11 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:15:46 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:29:22 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:10:18 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
-
-static int	is_vector(t_vector *vector)
-{
-	if (vector->x < -1.0 || vector->x > 1.0)
-		return (0);
-	else if (vector->y < -1.0 || vector->y > 1.0)
-		return (0);
-	else if (vector->z < -1.0 || vector->z > 1.0)
-		return (0);
-	return (1);
-}
 
 t_cylinder	*new_cy(char **array)
 {
@@ -43,7 +32,7 @@ t_cylinder	*new_cy(char **array)
 	new->d = ft_atoi_dbl(array[2]);
 	new->h = ft_atoi_dbl(array[3]);
 	new->color = get_rgb(array[4]);
-	if (!new->color)
+	if (!new->color || new->d <= 0 || new->h <= 0)
 	{
 		free(new);
 		return (NULL);

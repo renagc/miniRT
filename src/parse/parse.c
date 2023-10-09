@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:02:28 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:24:53 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:05:56 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,9 @@ void	parse(int ac, char **av)
 	}
 	scene = get_scene(fd);
 	if (!scene)
+	{
+		close(fd);
 		exit_parse("Scene Error");
+	}
+	close(fd);
 }
