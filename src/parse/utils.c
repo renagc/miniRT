@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:21:34 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/06 20:03:02 by rgomes-c         ###   ########.fr       */
+/*   Created: 2023/10/05 17:16:49 by rgomes-c          #+#    #+#             */
+/*   Updated: 2023/10/09 12:27:19 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include <minirt.h>
 
-char	*ft_strchr(const char *s, int c)
+char	**ft_split_pop_back(char *str, char *set)
 {
-	int				i;
-	unsigned char	*sp;
-	unsigned char	cp;
+	char	**array;
+	int		i;
 
-	sp = (unsigned char *)s;
-	cp = (unsigned char)c;
-	i = 0;
-	while (sp && sp[i])
+	i = -1;
+	while (str[++i])
 	{
-		if (sp[i] == cp)
-			break ;
-		i++;
+		if (ft_strchr(set, str[i]))
+			str[i] = 1;
 	}
-	if (sp && sp[i] == cp)
-		return ((char *)sp + i);
-	return (0);
+	array = ft_split(str, 1);
+	i = -1;
+	while (array[++i])
+		ft_pop_back(&array[i]);
+	return (array);
 }

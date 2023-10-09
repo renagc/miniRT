@@ -6,58 +6,53 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 15:04:21 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/04 16:14:12 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:02:09 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-static int	ft_count_words(char const *s, char c)
+static size_t	wd_count(const char *s, char c)
 {
-	int		i;
-	int		count;
+	int			i;
+	size_t		wd_count;
 
-	if (!s)
-		return (0);
 	i = 0;
-	count = 0;
-	while (s[i] != '\0')
+	wd_count = 0;
+	while (s[i])
 	{
-		while (s[i] == c)
-			i++;
-		if (s[i] != '\0')
-			count++;
-		while (s[i] && (s[i] != c))
-			i++;
+		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
+			wd_count++;
+		i++;
 	}
-	return (count);
+	return (wd_count);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**split;
 	int		i;
-	int		count;
 	int		j;
+	int		idx;
+	char	**matrix;
 
-	split = (char **)malloc((ft_count_words(s, c) + 1) * sizeof(char *));
-	if (!split || !s)
-		return (0);
-	j = 0;
-	i = 0;
-	while (s[i] != '\0' && ft_count_words(s, c) != 0)
+	matrix = (char **)malloc((wd_count(s, c) + 1) * sizeof(char *));
+	if (!matrix)
+		return (NULL);
+	i = -1;
+	idx = 0;
+	while (s && s[++i])
 	{
-		while (s[i] == c)
-			i++;
-		if (s[i] == '\0')
-			break ;
-		count = i;
-		while (s[i] != '\0' && s[i] != c)
-			i++;
-		if (i > count)
-			split[j] = ft_substr(s, count, i - count);
-		j++;
+		j = 0;
+		while (s[i + j] != c && s[i + j] != '\0')
+			j++;
+		if ((s[i + j] == c && j > 0) || s[i + j] == '\0')
+		{
+			matrix[idx++] = ft_substr(s, i, j);
+			if (s[i + j] == '\0')
+				break ;
+			i += j;
+		}
 	}
-	split[j] = NULL;
-	return (split);
+	matrix[idx] = NULL;
+	return (matrix);
 }

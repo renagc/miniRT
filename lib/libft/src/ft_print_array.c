@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_print_array.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:21:34 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/06 20:03:02 by rgomes-c         ###   ########.fr       */
+/*   Created: 2023/10/06 15:58:55 by rgomes-c          #+#    #+#             */
+/*   Updated: 2023/10/06 16:02:32 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strchr(const char *s, int c)
+//this function prints an array with printf function with a newline
+void	ft_print_array(char **array)
 {
-	int				i;
-	unsigned char	*sp;
-	unsigned char	cp;
+	int	i;
 
-	sp = (unsigned char *)s;
-	cp = (unsigned char)c;
-	i = 0;
-	while (sp && sp[i])
-	{
-		if (sp[i] == cp)
-			break ;
-		i++;
-	}
-	if (sp && sp[i] == cp)
-		return ((char *)sp + i);
-	return (0);
+	if (!array)
+		return ;
+	i = -1;
+	while (array[++i])
+		printf("%s\n", array[i]);
 }
