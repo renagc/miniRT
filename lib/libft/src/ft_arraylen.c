@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_arraylen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:21:34 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/06 20:03:02 by rgomes-c         ###   ########.fr       */
+/*   Created: 2022/10/07 10:54:27 by rgomes-c          #+#    #+#             */
+/*   Updated: 2023/10/06 22:24:43 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strchr(const char *s, int c)
+size_t	ft_arraylen(char **array)
 {
-	int				i;
-	unsigned char	*sp;
-	unsigned char	cp;
+	size_t	i;
 
-	sp = (unsigned char *)s;
-	cp = (unsigned char)c;
 	i = 0;
-	while (sp && sp[i])
-	{
-		if (sp[i] == cp)
-			break ;
+	while (array && array[i])
 		i++;
-	}
-	if (sp && sp[i] == cp)
-		return ((char *)sp + i);
-	return (0);
+	return (i);
 }

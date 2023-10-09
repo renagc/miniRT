@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:21:34 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/06 20:03:02 by rgomes-c         ###   ########.fr       */
+/*   Created: 2023/10/06 15:56:07 by rgomes-c          #+#    #+#             */
+/*   Updated: 2023/10/06 15:56:18 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strchr(const char *s, int c)
+//if s1 and s2 doesnt exist return UCHAR_MAX + 1
+int	ft_strcmp(char *s1, char *s2)
 {
-	int				i;
-	unsigned char	*sp;
-	unsigned char	cp;
+	int	i;
 
-	sp = (unsigned char *)s;
-	cp = (unsigned char)c;
+	if (!s1 || !s2)
+		return (UCHAR_MAX + 1);
 	i = 0;
-	while (sp && sp[i])
+	while (s1[i] && s2[i])
 	{
-		if (sp[i] == cp)
+		if (s1[i] != s2[i])
 			break ;
 		i++;
 	}
-	if (sp && sp[i] == cp)
-		return ((char *)sp + i);
-	return (0);
+	return (s1[i] - s2[i]);
 }

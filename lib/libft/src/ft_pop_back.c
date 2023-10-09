@@ -1,33 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_pop_back.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:21:34 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/06 20:03:02 by rgomes-c         ###   ########.fr       */
+/*   Created: 2023/10/06 15:55:21 by rgomes-c          #+#    #+#             */
+/*   Updated: 2023/10/06 16:08:54 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strchr(const char *s, int c)
+//this function delete last char of a string
+void	ft_pop_back(char **str)
 {
-	int				i;
-	unsigned char	*sp;
-	unsigned char	cp;
+	char	*new;
+	int		len;
+	int		i;
 
-	sp = (unsigned char *)s;
-	cp = (unsigned char)c;
-	i = 0;
-	while (sp && sp[i])
+	if (!(*str))
+		return ;
+	len = ft_strlen(*str);
+	if (len == 1)
 	{
-		if (sp[i] == cp)
-			break ;
-		i++;
+		free(*str);
+		return ;
 	}
-	if (sp && sp[i] == cp)
-		return ((char *)sp + i);
-	return (0);
+	new = malloc(len);
+	if (!new)
+		return ;
+	i = -1;
+	while (++i < len - 1)
+		new[i] = (*str)[i];
+	new[i] = '\0';
+	free(*str);
+	*str = new;
 }

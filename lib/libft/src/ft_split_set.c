@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_split_set.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:21:34 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/06 20:03:02 by rgomes-c         ###   ########.fr       */
+/*   Created: 2023/10/09 11:59:42 by rgomes-c          #+#    #+#             */
+/*   Updated: 2023/10/09 12:07:55 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strchr(const char *s, int c)
+char	**ft_split_set(char *str, char *set)
 {
-	int				i;
-	unsigned char	*sp;
-	unsigned char	cp;
+	int		i;
 
-	sp = (unsigned char *)s;
-	cp = (unsigned char)c;
-	i = 0;
-	while (sp && sp[i])
+	if (!str || !set)
+		return (NULL);
+	i = -1;
+	while (str[++i])
 	{
-		if (sp[i] == cp)
-			break ;
-		i++;
+		if (ft_strchr(set, str[i]))
+			str[i] = set[0];
 	}
-	if (sp && sp[i] == cp)
-		return ((char *)sp + i);
-	return (0);
+	return (ft_split((char *)str, set[0]));
 }

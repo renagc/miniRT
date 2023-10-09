@@ -6,16 +6,15 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/04 17:20:56 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:43:50 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
+#include <string.h>
 
-int	main(void)
+int	main(int ac, char **av)
 {
-	void	*mlx;
-	mlx = mlx_init();
-	(void)mlx;
+	parse(ac, av);
 	return (0);
 }

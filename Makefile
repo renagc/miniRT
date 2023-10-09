@@ -10,7 +10,7 @@ NAME = miniRT
 
 #Compiler flags
 CC = @cc
-CFLAGS = -Wall -Wextra -Werror -I$(INC) -g #-fsanitize=address,undefined
+CFLAGS = -Wall -Wextra -Werror -I$(INC) -fsanitize=address -g
 RM = @rm -rf
 
 #libft
@@ -18,7 +18,19 @@ LIBFT_DIR	=	lib/libft/
 LIBFT_A		=	lib/libft/libft.a
 
 #Source files
-SRC			=	src/main.c
+SRC			=	src/main.c \
+				src/utils.c \
+				src/parse/parse.c \
+				src/parse/get_scene.c \
+				src/parse/free_scene.c \
+				src/parse/utils.c \
+				src/parse/get_elements/get_camera.c \
+				src/parse/get_elements/get_cy.c \
+				src/parse/get_elements/get_light.c \
+				src/parse/get_elements/get_pl.c \
+				src/parse/get_elements/get_rgb.c \
+				src/parse/get_elements/get_sp.c \
+				src/parse/get_elements/get_vector.c
 
 #Object files
 OBJ			=	$(SRC:%.c=%.o)
@@ -44,6 +56,7 @@ $(NAME): $(OBJ)
 	@echo "$(GREEN)$(NAME) successfully compiled.$(COLOUR_END)"
 
 clean:
+	@rm -rf $(OBJ)
 	@make clean --silent -C $(LIBFT_DIR)
 	@echo "$(YELLOW)All Objects removed.$(COLOUR_END)"
 

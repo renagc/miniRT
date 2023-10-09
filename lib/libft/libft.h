@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 10:37:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/04 16:10:45 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:07:04 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
+# include <stdio.h>
+# include <stdbool.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
@@ -74,6 +77,14 @@ void	ft_putendl_fd(char *s, int fd);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_putstr_fd(char *s, int fd);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+
+//added later
+int		ft_strcmp(char *s1, char *s2);
+void	ft_pop_back(char **str);
+void	ft_print_array(char **array);
+double	ft_atoi_dbl(const char *str);
+size_t	ft_arraylen(char **array);
+char	**ft_split_set(char *str, char *set);
 
 // -> BONUS
 t_list	*ft_lstnew(void *content);
