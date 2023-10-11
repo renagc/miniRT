@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:01:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:34:17 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:35:30 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_sphere						t_sphere;
 typedef struct s_plane						t_plane;
 typedef struct s_cylinder					t_cylinder;
 typedef struct s_scene						t_scene;
-typedef struct s_parse						t_parse;
 
 // ----------------------------- FUNCTIONS ---------------------------------- //
 
@@ -64,7 +63,7 @@ int				is_double(char *str);
 t_vector		*get_vector(char *str);
 
 //parse.c
-void			parse(int ac, char **av);
+void			parse(int ac, char **av, t_scene **scene);
 
 // utils.c
 char			**ft_split_pop_back(char *str, char *set);

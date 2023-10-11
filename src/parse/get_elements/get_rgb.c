@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 22:08:18 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:10:21 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/10 21:05:47 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_rgb	*get_rgb(char *str)
 	rgb->r = ft_atoi(array[0]);
 	rgb->g = ft_atoi(array[1]);
 	rgb->b = ft_atoi(array[2]);
+	rgb->a = 0;
 	free(array);
 	return (rgb);
 }

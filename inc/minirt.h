@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/07 13:07:56 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/10 21:05:00 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,22 @@
 # define MINIRT_H
 
 // ------------------------------ HEADERS ----------------------------------- //
+
 # include "../lib/minilibx/mlx.h"
 # include "../lib/libft/libft.h"
+# include "mlx_utils.h"
 # include "parse.h"
 # include <stdio.h>
+# include <math.h>
+
+// ------------------------------- MACROS ----------------------------------- //
+
+# ifndef C_W
+#  define C_W 1000
+# endif
+# ifndef C_H
+#  define C_H 1000
+# endif
 
 // ------------------------------ STRUCTS ----------------------------------- //
 
@@ -53,6 +65,7 @@ struct s_rgb
 	unsigned char	r;
 	unsigned char	g;
 	unsigned char	b;
+	unsigned char	a;
 };
 
 struct s_amb_light
@@ -103,9 +116,6 @@ struct s_cylinder
 // ----------------------------- FUNCTIONS ---------------------------------- //
 
 //utils.c
-t_scene	*scene(void);
 void	free_array(char **array);
-
-// ------------------------------- MACROS ----------------------------------- //
 
 #endif

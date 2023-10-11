@@ -20,6 +20,7 @@ LIBFT_A		=	lib/libft/libft.a
 #Source files
 SRC			=	src/main.c \
 				src/utils.c \
+				src/mlx_utils.c \
 				src/parse/parse.c \
 				src/parse/get_scene.c \
 				src/parse/free_scene.c \

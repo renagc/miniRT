@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:36:18 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:33:53 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/10 12:12:14 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	is_fov(char *str)
 		if (!ft_isdigit(str[i]))
 			return (0);
 	}
-	if (ft_atoi(str) < 0 || ft_atoi(str) > 180)
+	if (ft_atoi(str) <= 0 || ft_atoi(str) > 180)
 		return (0);
 	return (1);
 }
