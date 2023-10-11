@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: gseco-lu <gseco-lu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/07 13:07:56 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:52:04 by gseco-lu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "../lib/minilibx/mlx.h"
 # include "../lib/libft/libft.h"
 # include "parse.h"
-# include <stdio.h>
+# include <math.h>
 
 // ------------------------------ STRUCTS ----------------------------------- //
 
