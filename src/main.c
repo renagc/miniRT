@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/11 11:46:56 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:58:09 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,41 +88,47 @@ double	ray_intersect_shpere_util(double a, double b, double disc)
 double	ray_intersect_shpere(t_rt *rt, t_sphere *sphere)
 {
 	t_vector	co;
-	double		a;
 	double		b;
 	double		c;
 	double		disc;
+	double		t1;
+	// double		t2;
 
 	co = subtract(rt->o, sphere->pos);
-	a = dot(&rt->d, &rt->d);
 	b = 2 * dot(&co, &rt->d);
-	c = dot(&co, &co) - pow(sphere->d / 2, 2);
-	disc = b * b - 4 * a * c;
+	c = dot(&co, &co) - ((sphere->d / 2) * (sphere->d / 2));
+	disc = (b * b) - (4 * c);
 	if (disc < 0)
-		return (-2);
-	return (ray_intersect_shpere_util(a, b, disc));
+		return (-1);
+	t1 = (-b - sqrt(disc)) / 2;
+	// t2 = (-b - sqrt(disc)) / 2;
+	if (t1 > 0)
+		return (1);
+	// if (t2 >= 0)
+	// 	return (t2);
+	return (-1);
 }
 
 t_rgb	trace_ray(t_rt *rt, t_sphere *sphere, double t_min, double t_max)
 {
 	t_sphere	*temp;
 	t_sphere	*closest_sphere;
-	double		closest_t;
+	// double		closest_t;
 	int			num_spheres;
 	int			i;
-	double		t;
 
+	(void) t_max;
+	(void) t_min;
 	temp = sphere;
 	num_spheres = 1;
-	closest_t = __DBL_MAX__;
+	// closest_t = __DBL_MAX__;
 	closest_sphere = NULL;
 	i = -1;
 	while (++i < num_spheres)
 	{
-		t = ray_intersect_shpere(rt, temp);
-		if (t >= 1 && t >= t_min && t <= t_max && t < closest_t)
+		if (ray_intersect_shpere(rt, temp))
 		{
-			closest_t = t;
+			// closest_t = t;
 			closest_sphere = temp;
 		}
 		temp = temp->next;
