@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/15 12:23:16 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:16:43 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "../lib/libft/libft.h"
 # include "mlx_utils.h"
 # include "parse.h"
+# include "math_calc.h"
 # include <stdio.h>
 # include <math.h>
 
@@ -42,6 +43,7 @@ typedef struct s_sphere						t_sphere;
 typedef struct s_plane						t_plane;
 typedef struct s_cylinder					t_cylinder;
 typedef struct s_scene						t_scene;
+typedef struct s_vector						t_vector;
 
 struct s_scene
 {
@@ -51,6 +53,13 @@ struct s_scene
 	t_sphere	*sp;
 	t_plane		*pl;
 	t_cylinder	*cy;
+};
+
+struct s_vector
+{
+	double	x;
+	double	y;
+	double	z;
 };
 
 struct s_coord
@@ -76,20 +85,20 @@ struct s_amb_light
 
 struct s_camera
 {
-	t_coord		*pos;
-	t_coord		*ori;
+	t_coord			*pos;
+	t_coord			*ori;
 	unsigned char	fov;
 };
 
 struct s_light
 {
-	t_coord		*pos;
+	t_coord			*pos;
 	double			ratio;
 };
 
 struct s_sphere
 {
-	t_coord		*pos;
+	t_coord			*pos;
 	double			d;
 	t_rgb			*color;
 	struct s_sphere	*next;
@@ -97,16 +106,16 @@ struct s_sphere
 
 struct s_plane
 {
-	t_coord		*pos;
-	t_coord		*ori;
+	t_coord			*pos;
+	t_coord			*ori;
 	t_rgb			*color;
 	struct s_plane	*next;
 };
 
 struct s_cylinder
 {
-	t_coord			*pos;
-	t_coord			*ori;
+	t_coord				*pos;
+	t_coord				*ori;
 	double				d;
 	double				h;
 	t_rgb				*color;
