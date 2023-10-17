@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:48:56 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:25:53 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:45:34 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,15 @@ static void	free_sp(t_sphere *sphere)
 	t_sphere	*next;
 
 	curr = sphere;
-	if (curr->next)
-		next = curr->next;
+	
 	while (curr)
 	{
+		if (curr->next)
+			next = curr->next;
 		free(curr->pos);
 		free(curr->color);
 		free(curr);
 		curr = next;
-		if (curr->next)
-			next = curr->next;
 	}
 }
 
@@ -57,17 +56,16 @@ static void	free_pl(t_plane *plane)
 	t_plane	*next;
 
 	curr = plane;
-	if (curr->next)
-		next = curr->next;
+	
 	while (curr)
 	{
+		if (curr->next)
+			next = curr->next;
 		free(curr->pos);
 		free(curr->color);
 		free(curr->ori);
 		free(curr);
 		curr = next;
-		if (curr->next)
-			next = curr->next;
 	}
 }
 
@@ -77,17 +75,16 @@ static void	free_cy(t_cylinder *cylinder)
 	t_cylinder	*next;
 
 	curr = cylinder;
-	if (curr->next)
-		next = curr->next;
+	
 	while (curr)
 	{
+		if (curr->next)
+			next = curr->next;
 		free(curr->color);
 		free(curr->ori);
 		free(curr->pos);
 		free(curr);
 		curr = next;
-		if (curr->next)
-			next = curr->next;
 	}
 }
 

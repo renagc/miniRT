@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/17 15:21:05 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/17 22:40:02 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
 	t_coord		c_on_vp;
 	t_vector	vector_o_vp;
 
+	if (!scene)
+		return ;
+	(void)rt;
 	vp = get_viewport_dimensions(scene->c->fov);
 	rt.bg_color.r = 255;
 	rt.bg_color.g = 0;
@@ -124,6 +127,12 @@ void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
 	mlx_put_image_to_window(mlx, mlx_window, img.reference, 0, 0);
 }
 
+int	ft_xbutton(t_scene *scene)
+{
+	free_scene(scene);
+	exit (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_scene	*scene;
@@ -132,9 +141,12 @@ int	main(int ac, char **av)
 
 	scene = NULL;
 	parse(ac, av, &scene);
+	(void)mlx;
 	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, C_W, C_H, "Test");
+	mlx_hook(mlx_win, X_WINBUTTON, 1L << 3, &ft_xbutton, &scene);
 	start_ray(scene, mlx, mlx_win);
 	mlx_loop(mlx);
+	free_scene(scene);
 	return (0);
 }

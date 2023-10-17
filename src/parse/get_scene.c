@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_scene.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 12:18:27 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:21:59 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:33:12 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,11 @@ t_scene	*handle_free_scene(char *line, char **element, t_scene *scene)
 {
 	if (line)
 		free(line);
+	(void)(element);
+	// if (element)
+	// 	free_array(element);
 	if (scene)
-		free(scene);
-	if (element)
-		free_array(element);
+		free_scene(scene);
 	return (NULL);
 }
 

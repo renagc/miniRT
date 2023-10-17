@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:02:28 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/10 12:08:39 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/17 16:21:21 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	parse(int ac, char **av, t_scene **scene)
 		exit(1);
 	}
 	*scene = get_scene(fd);
-	if (!scene)
+	if (!(*scene))
 	{
 		close(fd);
 		exit_parse("Scene Error");

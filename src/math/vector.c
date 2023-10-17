@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:51:14 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/17 14:52:01 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:30:14 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
+
 
 t_vector	subtract(t_coord *coord1, t_coord *coord2)
 {

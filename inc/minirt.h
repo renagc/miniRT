@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/17 15:16:43 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/17 22:33:26 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // ------------------------------ HEADERS ----------------------------------- //
 
 # include "../lib/minilibx/mlx.h"
+# include <mlx.h>
 # include "../lib/libft/libft.h"
 # include "mlx_utils.h"
 # include "parse.h"
@@ -31,6 +32,8 @@
 # ifndef C_H
 #  define C_H 1000
 # endif
+# define X_WINBUTTON	17
+# define KEY_ESC		65307
 
 // ------------------------------ STRUCTS ----------------------------------- //
 

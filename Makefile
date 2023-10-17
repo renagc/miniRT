@@ -10,7 +10,7 @@ NAME = miniRT
 
 #Compiler flags
 CC = @cc
-CFLAGS = -Wall -Wextra -Werror -I$(INC) -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -I$(INC) #-fsanitize=address -g
 RM = @rm -rf
 
 #libft
@@ -43,7 +43,7 @@ INC			= inc/
 #OS
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
-    O_FLAGS = linux
+    O_FLAGS = /usr/local/lib/libmlx.a -I/usr/local/include/mlx.h -lXext -lX11 -lm -lbsd
 else
     O_FLAGS = -lmlx -L/usr/X11/lib -lXext -lX11
 endif
