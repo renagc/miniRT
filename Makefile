@@ -31,7 +31,7 @@ SRC			=	src/main.c \
 				src/parse/get_elements/get_pl.c \
 				src/parse/get_elements/get_rgb.c \
 				src/parse/get_elements/get_sp.c \
-				src/parse/get_elements/get_vector.c
+				src/parse/get_elements/get_coord.c
 
 #Object files
 OBJ			=	$(SRC:%.c=%.o)

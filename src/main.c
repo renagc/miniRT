@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/13 16:58:09 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/15 12:22:34 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 typedef struct s_viewport	t_viewport;
 typedef struct s_rt			t_rt;
+typedef struct s_vector		t_vector;
+
+struct s_vector
+{
+	double	x;
+	double	y;
+	double	z;
+};
 
 struct s_viewport
 {
@@ -27,26 +35,32 @@ struct s_rt
 {
 	t_viewport	vp;
 	t_rgb		bg_color;
-	t_vector	*o;
-	t_vector	v;
-	t_vector	d;
+	t_coord		*camera_origin;
+	t_vector	o_vp;
+	t_coord		d;
 };
 
-t_viewport	get_viewport(int fov)
+// Assumindo que distancia da camara ao plano de projecao é 1 unidade;
+// tan(alpha) = cateto oposto sobre o cateto adjacente;
+// para calcular a largura é nada mais do que uma regra de 3 simples;
+t_viewport	get_viewport_dimensions(int fov)
 {
 	t_viewport	viewport;
-	double		fov_rad;
+	double		alpha;
+	double		rad;
 
-	fov_rad = fov * (M_PI / 180.0);
-	viewport.vh = 2 * tan(fov_rad / 2);
-	viewport.vw = viewport.vh * C_W / C_H;
+	rad = fov * (M_PI / 180);
+	alpha = rad / 2;
 	viewport.d = 1.0;
+	viewport.vh = 2 * tan(alpha) * viewport.d;
+	viewport.vw = viewport.vh * C_W / C_H;
 	return (viewport);
 }
 
-t_vector	canvas_to_viewport(double cx, double cy, t_viewport view)
+// Para calcular cada coordenada do viewport fazemos tambem uma regra 3 simples;
+t_coord	canvas_to_viewport(double cx, double cy, t_viewport view)
 {
-	t_vector	vp;
+	t_coord	vp;
 
 	vp.x = cx * view.vw / C_W;
 	vp.y = cy * view.vh / C_H;
@@ -54,88 +68,91 @@ t_vector	canvas_to_viewport(double cx, double cy, t_viewport view)
 	return (vp);
 }
 
-t_vector	subtract(t_vector *vector1, t_vector *vector2)
+t_vector	subtract(t_coord *coord1, t_coord *coord2)
 {
 	t_vector	result;
 
-	result.x = vector1->x - vector2->x;
-	result.y = vector1->y - vector2->y;
-	result.z = vector1->z - vector2->z;
+	result.x = coord1->x - coord2->x;
+	result.y = coord1->y - coord2->y;
+	result.z = coord1->z - coord2->z;
 	return (result);
 }
 
-double	dot(t_vector *vector1, t_vector *vector2)
+double	product(t_coord *coord1, t_coord *coord2)
 {
-	return (vector1->x * vector2->x + vector1->y * vector2->y
-		+ vector1->z * vector2->z);
+	double	result;
+
+	result = coord1->x * coord2->x;
+	result += coord1->y * coord2->y;
+	result += coord1->z * coord2->z;
+	return (result);
 }
 
-double	ray_intersect_shpere_util(double a, double b, double disc)
+//return NULL if not possible to solve
+double	*solve_quadratic_function(double a, double b, double c)
 {
-	double	t1;
-	double	t2;
+	double	*t;
+	double	discriminant;
 
-	t1 = (-b + sqrt(disc)) / (2 * a);
-	t2 = (-b - sqrt(disc)) / (2 * a);
-	if (t1 >= 0)
-		return (t1);
-	else if (t2 >= 0)
-		return (t2);
-	else
-		return (-1);
+	discriminant = (b * b) - 4 * a * c;
+	if (discriminant < 0)
+		return (NULL);
+	t = malloc(sizeof(double) * 2);
+	if (!t)
+		return (NULL);
+	t[0] = (-b + sqrt(discriminant)) / (2 * a);
+	t[1] = (-b - sqrt(discriminant)) / (2 * a);
+	return (t);
 }
 
-double	ray_intersect_shpere(t_rt *rt, t_sphere *sphere)
+// atˆ2 + 2bt + c = 0;
+double	*ray_intersect_sphere(t_scene *scene, t_sphere *sphere, t_vector *d)
 {
-	t_vector	co;
+	double		a;
 	double		b;
 	double		c;
-	double		disc;
-	double		t1;
-	// double		t2;
+	t_vector	co;
 
-	co = subtract(rt->o, sphere->pos);
-	b = 2 * dot(&co, &rt->d);
-	c = dot(&co, &co) - ((sphere->d / 2) * (sphere->d / 2));
-	disc = (b * b) - (4 * c);
-	if (disc < 0)
-		return (-1);
-	t1 = (-b - sqrt(disc)) / 2;
-	// t2 = (-b - sqrt(disc)) / 2;
-	if (t1 > 0)
-		return (1);
-	// if (t2 >= 0)
-	// 	return (t2);
-	return (-1);
+	co = subtract(scene->c->pos, sphere->pos);
+	a = product((t_coord *)d, (t_coord *)d);
+	b = 2 * product((t_coord *)&co, (t_coord *)d);
+	c = product((t_coord *)&co, (t_coord *)&co) - (sphere->d / 2) * (sphere->d / 2);
+	return (solve_quadratic_function(a, b, c));
 }
 
-t_rgb	trace_ray(t_rt *rt, t_sphere *sphere, double t_min, double t_max)
+void	sphere_intersection(t_scene *scene, t_vector *d, t_image *img, int x, int y)
 {
+	t_rgb		color;
+	double		closest_t;
 	t_sphere	*temp;
-	t_sphere	*closest_sphere;
-	// double		closest_t;
-	int			num_spheres;
-	int			i;
+	double		*inter;
+	double		util;
 
-	(void) t_max;
-	(void) t_min;
-	temp = sphere;
-	num_spheres = 1;
-	// closest_t = __DBL_MAX__;
-	closest_sphere = NULL;
-	i = -1;
-	while (++i < num_spheres)
+	closest_t = __DBL_MAX__;
+	color.r = 0;
+	color.g = 0;
+	color.b = 0;
+	color.a = 0;
+	temp = scene->sp;
+	while (temp)
 	{
-		if (ray_intersect_shpere(rt, temp))
+		inter = ray_intersect_sphere(scene, temp, d);
+		if (inter)
 		{
-			// closest_t = t;
-			closest_sphere = temp;
+			if (inter[0] < inter[1])
+				util = inter[0];
+			else
+				util = inter[1];
+			if (util < closest_t)
+			{
+				closest_t = inter[0];
+				color = *temp->color;
+			}
+			free(inter);
 		}
 		temp = temp->next;
 	}
-	if (closest_sphere == NULL)
-		return (rt->bg_color);
-	return (*closest_sphere->color);
+	turn_pixel_to_color(&img->pixels[(x + C_W / 2) * 4 + img->line_size * (y + C_H / 2)], color);
 }
 
 void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
@@ -144,24 +161,24 @@ void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
 	int		x;
 	int		y;
 	t_image	img;
+	t_viewport	vp;
+	t_coord		c_on_vp;
+	t_vector	vector_o_vp;
 
+	vp = get_viewport_dimensions(scene->c->fov);
 	rt.bg_color.r = 255;
 	rt.bg_color.g = 0;
 	rt.bg_color.b = 0;
 	img = ft_new_image(mlx, C_W, C_H);
-	rt.o = scene->c->pos;
-	rt.vp = get_viewport(scene->c->fov);
-	y = -1;
-	while (++y < C_H)
+	y = -C_H / 2 - 1;
+	while (++y < C_H / 2)
 	{
-		x = -1;
-		while (++x < C_W)
+		x = -C_W / 2 - 1;
+		while (++x < C_W / 2)
 		{
-			rt.v = canvas_to_viewport(x, y, rt.vp);
-			rt.d = subtract(&rt.v, rt.o);
-			turn_pixel_to_color(
-				&img.pixels[x * 4 + img.line_size * y],
-				trace_ray(&rt, scene->sp, 1, __DBL_MAX__));
+			c_on_vp = canvas_to_viewport(x, y, vp);
+			vector_o_vp = subtract(&c_on_vp, scene->c->pos);
+			sphere_intersection(scene, &vector_o_vp, &img, x, y);
 		}
 	}
 	mlx_put_image_to_window(mlx, mlx_window, img.reference, 0, 0);

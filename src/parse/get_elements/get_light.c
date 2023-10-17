@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 22:32:55 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/07 13:09:16 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/14 12:27:15 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_light	*get_light(char **array)
 	light = malloc(sizeof(t_light));
 	if (!light)
 		return (NULL);
-	light->pos = get_vector(array[0]);
+	light->pos = get_coord(array[0]);
 	if (!light->pos)
 	{
 		free(light);

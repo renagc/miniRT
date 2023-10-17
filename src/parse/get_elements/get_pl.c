@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:15:46 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:34:08 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/14 12:43:43 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ t_plane	*new_pl(char **array)
 	new = malloc(sizeof(t_plane));
 	if (!new)
 		return (NULL);
-	new->pos = get_vector(array[0]);
-	new->ori = get_vector(array[1]);
-	if (!new->pos || !new->ori || !is_vector(new->ori))
+	new->pos = get_coord(array[0]);
+	new->ori = get_coord(array[1]);
+	if (!new->pos || !new->ori || !is_coord(new->ori))
 	{
 		free(new);
 		return (NULL);
