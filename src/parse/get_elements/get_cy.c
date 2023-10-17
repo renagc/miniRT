@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:15:46 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 15:10:18 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/14 12:43:43 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ t_cylinder	*new_cy(char **array)
 	new = malloc(sizeof(t_cylinder));
 	if (!new)
 		return (NULL);
-	new->pos = get_vector(array[0]);
-	new->ori = get_vector(array[1]);
-	if (!new->pos || !is_vector(new->ori) || !new->ori
+	new->pos = get_coord(array[0]);
+	new->ori = get_coord(array[1]);
+	if (!new->pos || !is_coord(new->ori) || !new->ori
 		|| !is_double(array[2]) || !is_double(array[3]))
 	{
 		free(new);

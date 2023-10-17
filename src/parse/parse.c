@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:02:28 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 15:05:56 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/10 12:08:39 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,8 @@ static int	check_file_name(char *str)
 	return (1);
 }
 
-void	parse(int ac, char **av)
+void	parse(int ac, char **av, t_scene **scene)
 {
-	t_scene	*scene;
 	int		fd;
 
 	if (ac != 2)
@@ -60,7 +59,7 @@ void	parse(int ac, char **av)
 		perror("Error");
 		exit(1);
 	}
-	scene = get_scene(fd);
+	*scene = get_scene(fd);
 	if (!scene)
 	{
 		close(fd);

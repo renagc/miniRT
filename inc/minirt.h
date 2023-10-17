@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/07 13:07:56 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:16:43 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,27 @@
 # define MINIRT_H
 
 // ------------------------------ HEADERS ----------------------------------- //
+
 # include "../lib/minilibx/mlx.h"
 # include "../lib/libft/libft.h"
+# include "mlx_utils.h"
 # include "parse.h"
+# include "math_calc.h"
 # include <stdio.h>
+# include <math.h>
+
+// ------------------------------- MACROS ----------------------------------- //
+
+# ifndef C_W
+#  define C_W 1000
+# endif
+# ifndef C_H
+#  define C_H 1000
+# endif
 
 // ------------------------------ STRUCTS ----------------------------------- //
 
-typedef struct s_vector						t_vector;
+typedef struct s_coord						t_coord;
 typedef struct s_rgb						t_rgb;
 typedef struct s_amb_light					t_amb_light;
 typedef struct s_camera						t_camera;
@@ -30,6 +43,7 @@ typedef struct s_sphere						t_sphere;
 typedef struct s_plane						t_plane;
 typedef struct s_cylinder					t_cylinder;
 typedef struct s_scene						t_scene;
+typedef struct s_vector						t_vector;
 
 struct s_scene
 {
@@ -48,11 +62,19 @@ struct s_vector
 	double	z;
 };
 
+struct s_coord
+{
+	double	x;
+	double	y;
+	double	z;
+};
+
 struct s_rgb
 {
 	unsigned char	r;
 	unsigned char	g;
 	unsigned char	b;
+	unsigned char	a;
 };
 
 struct s_amb_light
@@ -63,20 +85,20 @@ struct s_amb_light
 
 struct s_camera
 {
-	t_vector		*pos;
-	t_vector		*ori;
+	t_coord			*pos;
+	t_coord			*ori;
 	unsigned char	fov;
 };
 
 struct s_light
 {
-	t_vector		*pos;
+	t_coord			*pos;
 	double			ratio;
 };
 
 struct s_sphere
 {
-	t_vector		*pos;
+	t_coord			*pos;
 	double			d;
 	t_rgb			*color;
 	struct s_sphere	*next;
@@ -84,16 +106,16 @@ struct s_sphere
 
 struct s_plane
 {
-	t_vector		*pos;
-	t_vector		*ori;
+	t_coord			*pos;
+	t_coord			*ori;
 	t_rgb			*color;
 	struct s_plane	*next;
 };
 
 struct s_cylinder
 {
-	t_vector			*pos;
-	t_vector			*ori;
+	t_coord				*pos;
+	t_coord				*ori;
 	double				d;
 	double				h;
 	t_rgb				*color;
@@ -103,9 +125,6 @@ struct s_cylinder
 // ----------------------------- FUNCTIONS ---------------------------------- //
 
 //utils.c
-t_scene	*scene(void);
 void	free_array(char **array);
-
-// ------------------------------- MACROS ----------------------------------- //
 
 #endif

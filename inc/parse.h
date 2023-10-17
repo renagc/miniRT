@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:01:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:34:17 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/14 12:43:43 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 // ------------------------------ STRUCTS ----------------------------------- //
 
-typedef struct s_vector						t_vector;
+typedef struct s_coord						t_coord;
 typedef struct s_rgb						t_rgb;
 typedef struct s_amb_light					t_amb_light;
 typedef struct s_camera						t_camera;
@@ -32,7 +32,6 @@ typedef struct s_sphere						t_sphere;
 typedef struct s_plane						t_plane;
 typedef struct s_cylinder					t_cylinder;
 typedef struct s_scene						t_scene;
-typedef struct s_parse						t_parse;
 
 // ----------------------------- FUNCTIONS ---------------------------------- //
 
@@ -56,15 +55,15 @@ t_light			*get_light(char **array);
 t_rgb			*get_rgb(char *str);
 
 //get_camera.c
-int				is_vector(t_vector *vector);
+int				is_coord(t_coord *coord);
 t_camera		*get_camera(char **array);
 
-//get_vector.c
+//get_coord.c
 int				is_double(char *str);
-t_vector		*get_vector(char *str);
+t_coord		*get_coord(char *str);
 
 //parse.c
-void			parse(int ac, char **av);
+void			parse(int ac, char **av, t_scene **scene);
 
 // utils.c
 char			**ft_split_pop_back(char *str, char *set);

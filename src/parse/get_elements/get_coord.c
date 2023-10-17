@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_vector.c                                       :+:      :+:    :+:   */
+/*   get_coord.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -36,15 +36,15 @@ int	is_double(char *str)
 	return (1);
 }
 
-t_vector	*get_vector(char *str)
+t_coord	*get_coord(char *str)
 {
-	t_vector	*xyz;
+	t_coord	*xyz;
 	char		**array;
 
 	array = ft_split_pop_back(str, ",");
 	if (!array)
 		return (NULL);
-	xyz = malloc(sizeof(t_vector));
+	xyz = malloc(sizeof(t_coord));
 	if (!xyz || ft_arraylen(array) != 3)
 	{
 		if (xyz)

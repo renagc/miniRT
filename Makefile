@@ -20,6 +20,9 @@ LIBFT_A		=	lib/libft/libft.a
 #Source files
 SRC			=	src/main.c \
 				src/utils.c \
+				src/math/vector.c \
+				src/math/sphere.c \
+				src/mlx_utils.c \
 				src/parse/parse.c \
 				src/parse/get_scene.c \
 				src/parse/free_scene.c \
@@ -30,7 +33,7 @@ SRC			=	src/main.c \
 				src/parse/get_elements/get_pl.c \
 				src/parse/get_elements/get_rgb.c \
 				src/parse/get_elements/get_sp.c \
-				src/parse/get_elements/get_vector.c
+				src/parse/get_elements/get_coord.c
 
 #Object files
 OBJ			=	$(SRC:%.c=%.o)
