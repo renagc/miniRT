@@ -6,7 +6,7 @@
 /*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/17 22:40:02 by qwerty           ###   ########.fr       */
+/*   Updated: 2023/10/19 19:04:43 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,20 @@ t_coord	canvas_to_viewport(double cx, double cy, t_viewport view)
 	return (vp);
 }
 
+t_rgb	get_color_light(t_sphere *closest_sp, t_rgb *color, t_vector *p, t_vector *n, t_scene *scene)
+{
+	t_rgb	tmp_color;
+	double	tmp_cl;
+
+	if (!closest_sp)
+		return (*color);
+	tmp_cl = compute_lighting(scene, p, n);
+	tmp_color.r = closest_sp->color->r * tmp_cl;
+	tmp_color.g = closest_sp->color->g * tmp_cl;
+	tmp_color.b = closest_sp->color->b * tmp_cl;
+	return (tmp_color);
+}
+
 void	sphere_intersection(t_scene *scene, t_vector *d, t_image *img, int x, int y)
 {
 	t_rgb		color;
@@ -67,6 +81,9 @@ void	sphere_intersection(t_scene *scene, t_vector *d, t_image *img, int x, int y
 	t_sphere	*temp;
 	double		*inter;
 	double		util;
+	t_vector	p;
+	t_vector	n;
+	t_sphere	*closest_sp;
 
 	closest_t = __DBL_MAX__;
 	color.r = 0;
@@ -74,6 +91,7 @@ void	sphere_intersection(t_scene *scene, t_vector *d, t_image *img, int x, int y
 	color.b = 0;
 	color.a = 0;
 	temp = scene->sp;
+	closest_sp = NULL;
 	while (temp)
 	{
 		inter = ray_intersect_sphere(scene, temp, d);
@@ -86,13 +104,19 @@ void	sphere_intersection(t_scene *scene, t_vector *d, t_image *img, int x, int y
 			if (util < closest_t)
 			{
 				closest_t = inter[0];
-				color = *temp->color;
+				closest_sp = temp;
 			}
 			free(inter);
 		}
 		temp = temp->next;
 	}
-	turn_pixel_to_color(&img->pixels[(x + C_W / 2) * 4 + img->line_size * (y + C_H / 2)], color);
+	p = find_p(d, scene->c->pos, closest_t);
+	if (closest_sp)
+	{
+		n = subtract((t_coord *)&p, closest_sp->pos);
+		n = vec_normalize(&n);
+	}
+	turn_pixel_to_color(&img->pixels[(x + C_W / 2) * 4 + img->line_size * (y + C_H / 2)], get_color_light(closest_sp, &color, &p, &n, scene));
 }
 
 void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
@@ -133,6 +157,15 @@ int	ft_xbutton(t_scene *scene)
 	exit (0);
 }
 
+void	ft_esc(int key, t_scene *scene)
+{
+	if (key == KEY_ESC)
+	{
+		free_scene(scene);
+		exit (0);	
+	}
+}
+
 int	main(int ac, char **av)
 {
 	t_scene	*scene;
@@ -145,6 +178,8 @@ int	main(int ac, char **av)
 	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, C_W, C_H, "Test");
 	mlx_hook(mlx_win, X_WINBUTTON, 1L << 3, &ft_xbutton, &scene);
+	//scene->esc = 0;
+	//mlx_loop_hook(window.mlx, ft_work, &window);
 	start_ray(scene, mlx, mlx_win);
 	mlx_loop(mlx);
 	free_scene(scene);

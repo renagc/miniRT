@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:52:53 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/17 15:03:50 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/19 17:03:37 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ double	*ray_intersect_sphere(t_scene *scene, t_sphere *sphere, t_vector *d)
 
 	r = sphere->d / 2;
 	co = subtract(scene->c->pos, sphere->pos);
-	a = product((t_coord *)d, (t_coord *)d);
-	b = 2 * product((t_coord *)&co, (t_coord *)d);
-	c = product((t_coord *)&co, (t_coord *)&co) - r * r;
+	a = product(d, d);
+	b = 2 * product(&co, d);
+	c = product(&co, &co) - r * r;
 	return (solve_quadratic_function(a, b, c));
 }
+
+

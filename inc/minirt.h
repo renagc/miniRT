@@ -6,7 +6,7 @@
 /*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/17 22:33:26 by qwerty           ###   ########.fr       */
+/*   Updated: 2023/10/19 17:48:24 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ struct s_scene
 	t_sphere	*sp;
 	t_plane		*pl;
 	t_cylinder	*cy;
+	int			esc;
 };
 
 struct s_vector
@@ -129,5 +130,6 @@ struct s_cylinder
 
 //utils.c
 void	free_array(char **array);
+double  compute_lighting(t_scene *scene, t_vector *p, t_vector *n);
 
 #endif

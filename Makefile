@@ -10,7 +10,7 @@ NAME = miniRT
 
 #Compiler flags
 CC = @cc
-CFLAGS = -Wall -Wextra -Werror -I$(INC) #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -I$(INC) -fsanitize=address -g
 RM = @rm -rf
 
 #libft
@@ -19,6 +19,7 @@ LIBFT_A		=	lib/libft/libft.a
 
 #Source files
 SRC			=	src/main.c \
+				src/light.c \
 				src/utils.c \
 				src/math/vector.c \
 				src/math/sphere.c \
