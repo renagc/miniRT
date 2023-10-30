@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 20:55:15 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/11 11:35:53 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/30 12:06:28 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ struct	s_image
 
 // ----------------------------- FUNCTIONS ---------------------------------- //
 
-void		turn_pixel_to_color(char *pixel, t_rgb color);
+void		turn_pixel_to_color(char *pixel, t_rgb *color);
 t_image		ft_new_image(void *mlx, int width, int height);
 
 #endif
