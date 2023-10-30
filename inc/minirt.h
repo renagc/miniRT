@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/17 15:16:43 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:23:19 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 // ------------------------------- MACROS ----------------------------------- //
 
 # ifndef C_W
-#  define C_W 1000
+#  define C_W 500
 # endif
 # ifndef C_H
-#  define C_H 1000
+#  define C_H 500
 # endif
 
 // ------------------------------ STRUCTS ----------------------------------- //
@@ -126,5 +126,6 @@ struct s_cylinder
 
 //utils.c
 void	free_array(char **array);
+void	debug(t_scene *scene);
 
 #endif

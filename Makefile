@@ -19,6 +19,7 @@ LIBFT_A		=	lib/libft/libft.a
 
 #Source files
 SRC			=	src/main.c \
+				src/debug.c \
 				src/utils.c \
 				src/math/vector.c \
 				src/math/sphere.c \
@@ -43,7 +44,7 @@ INC			= inc/
 #OS
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
-    O_FLAGS = linux
+    O_FLAGS = /usr/local/lib/libmlx.a -I/usr/local/include/mlx.h -lXext -lX11 -lm -lbsd
 else
     O_FLAGS = -lmlx -L/usr/X11/lib -lXext -lX11
 endif
@@ -71,6 +72,6 @@ fclean: clean
 re: fclean all
 
 val: re
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp --track-fds=yes --track-origins=yes ./minishell 2>valgrind.log
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp --track-fds=yes --track-origins=yes ./$(NAME) 2>valgrind.log
 
 .PHONY: all clean fclean re bonus

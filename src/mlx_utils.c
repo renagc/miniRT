@@ -6,18 +6,26 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 21:01:46 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/11 11:35:44 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/30 12:07:46 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-void	turn_pixel_to_color(char *pixel, t_rgb color)
+void	turn_pixel_to_color(char *pixel, t_rgb *color)
 {
-	pixel[0] = color.b;
-	pixel[1] = color.g;
-	pixel[2] = color.r;
-	pixel[3] = color.a;
+	if (!color)
+	{
+		pixel[0] = 0;
+		pixel[1] = 0;
+		pixel[2] = 0;
+		pixel[3] = 0;
+		return ;
+	}
+	pixel[0] = color->b;
+	pixel[1] = color->g;
+	pixel[2] = color->r;
+	pixel[3] = color->a;
 }
 
 t_image	ft_new_image(void *mlx, int width, int height)
