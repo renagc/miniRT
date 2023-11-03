@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/30 17:54:09 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:43:45 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	intersect_ray_sphere(t_coord *o, t_coord *d, t_sphere *sp, double *t)
 	b = 2 * product(&co, d);
 	c = product(&co, &co) - ((sp->d / 2) * (sp->d / 2));
 	disc = b * b - 4 * a * c;
-	if (d < 0)
+	if (disc < 0)
 		return (0);
 	t[0] = (-b + sqrt(disc)) / (2 * a);
 	t[1] = (-b - sqrt(disc)) / (2 * a);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 20:40:59 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 11:56:53 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:32:03 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	free_array(char **array)
 {
-	int	i;
+	//int	i;
 
 	if (!array)
 		return ;
-	i = -1;
-	while (array[++i])
-		free(array[i]);
+	//i = -1;
+	//while (array[++i])
+	//	free(array[i]);
 	free(array);
 }
