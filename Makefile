@@ -21,6 +21,7 @@ LIBFT_A		=	lib/libft/libft.a
 SRC			=	src/main.c \
 				src/debug.c \
 				src/utils.c \
+				src/rotation.c \
 				src/math/vector.c \
 				src/math/sphere.c \
 				src/mlx_utils.c \

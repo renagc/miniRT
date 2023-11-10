@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/30 17:23:19 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:33:09 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ typedef struct s_plane						t_plane;
 typedef struct s_cylinder					t_cylinder;
 typedef struct s_scene						t_scene;
 typedef struct s_vector						t_vector;
+typedef struct s_matrix						t_matrix;
+typedef struct s_raytrace					t_raytrace;
+typedef struct s_closest					t_closest;
 
 struct s_scene
 {
@@ -122,10 +125,42 @@ struct s_cylinder
 	struct s_cylinder	*next;
 };
 
+struct s_matrix
+{
+	t_coord	x;
+	t_coord	y;
+	t_coord	z;
+};
+
+struct s_closest
+{
+	t_rgb		*color;
+	t_coord		*pos;
+	double		t;
+	int			obj;
+};
+
+struct s_raytrace
+{
+	t_coord		o;
+	t_coord		d;
+	t_closest	closest;
+};
+
+enum e_objects
+{
+	SPHERE = 1,
+	PLANE = 2,
+	CYLINDER = 3
+};
+
 // ----------------------------- FUNCTIONS ---------------------------------- //
 
 //utils.c
-void	free_array(char **array);
-void	debug(t_scene *scene);
+void		free_array(char **array);
+void		debug(t_scene *scene);
+t_coord		rotate_camera(t_coord orientation_vector, t_matrix rotation_matrix);
+t_matrix	create_rotation_matrix(t_coord *ori);
+t_coord		rotate_vector(t_coord vector, t_coord rotation);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:01:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/30 12:27:13 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:46:44 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ double		product(t_coord *coord1, t_coord *coord2);
 t_coord		add_const(t_coord *coord1, t_coord *coord2, double constant);
 t_coord		subtract_const(t_coord *coord1, t_coord *coord2, double constant);
 t_rgb		*multiply_color(t_rgb *color, double multiply);
+t_coord		cross(t_coord *a, t_coord *b);
 
 //sphere.c
 double		*ray_intersect_sphere(t_scene *scene, t_sphere *sphere, \
