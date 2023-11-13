@@ -45,7 +45,7 @@ INC			= inc/
 #OS
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
-    O_FLAGS = /usr/local/lib/libmlx.a -I/usr/local/include/mlx.h -lXext -lX11 -lm -lbsd
+    O_FLAGS = lib/minilibx/libmlx.a -I/usr/local/include/mlx.h -lXext -lX11 -lm -lbsd
 else
     O_FLAGS = -lmlx -L/usr/X11/lib -lXext -lX11
 endif
