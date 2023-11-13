@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:51:14 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/31 11:46:36 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:55:59 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ t_rgb	*multiply_color(t_rgb *color, double multiply)
 {
 	t_rgb	*result;
 
+	// if (!color)
+	// 	return (NULL);
 	result = malloc(sizeof(t_rgb));
 	result->r = color->r * multiply;
 	result->g = color->g * multiply;

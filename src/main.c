@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/10 20:18:36 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:42:12 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	intersect_ray_plane(double t_min, double t_max, t_raytrace *rt, t_plane *pl
 
 	op = subtract_const(&rt->o, plane->pos, 1);
 	vd = -product(plane->ori, &op);
-	if (vd == 0)
+	if (vd > 0)
 		return ;
 	t = vd / product(&rt->d, plane->ori);
 	if (t < rt->closest.t && t > t_min && t < t_max)
@@ -120,6 +120,7 @@ void	intersect_ray_plane(double t_min, double t_max, t_raytrace *rt, t_plane *pl
 		get_closest_obj(rt, t, plane);
 	}
 }
+
 void	intersect_ray_cylinder(double t_min, double t_max, t_raytrace *rt, t_cylinder *cylinder)
 {
 	t_coord		op;
@@ -193,7 +194,7 @@ double	compute_light(t_raytrace *rt, t_coord *n, t_scene *scene)
 	if (scene->l)
 	{
 		rt->d = subtract_const(scene->l->pos, &rt->o, 1);
-		closest_intersection(0.001, 1, rt, scene);
+		closest_intersection(0.001, INT_MAX, rt, scene);
 		if (rt->closest.obj == 0)
 		{
 			n_dot_l = product(n, &rt->d);
@@ -221,9 +222,6 @@ t_rgb	*trace_ray(t_raytrace *rt, t_scene *scene)
 	rt->o = add_const(&rt->o, &rt->d, rt->closest.t);
 	n = subtract_const(&rt->o, rt->closest.pos, 1);
 	vec_normalize(&n);
-	// if (compute_light(rt, &n, scene) == scene->a->ratio)
-	// 	return (rt->closest.color);
-	// else
 	return (multiply_color(rt->closest.color, compute_light(rt, &n, scene)));
 }
 
@@ -246,7 +244,8 @@ void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
 		{
 			rt.d = canvas_to_viewport(x, y, vp);
 			color = trace_ray(&rt, scene);
-			turn_pixel_to_color(&img.pixels[(x + C_W / 2) * 4 + img.line_size * (-y + C_H / 2)], color);
+			if (color)
+				turn_pixel_to_color(&img.pixels[(x + C_W / 2) * 4 + img.line_size * (-y + C_H / 2)], color);
 		}
 	}
 	mlx_put_image_to_window(mlx, mlx_window, img.reference, 0, 0);
@@ -262,7 +261,7 @@ int	main(int ac, char **av)
 	parse(ac, av, &scene);
 	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, C_W, C_H, "Test");
-	//debug(scene);
+	debug(scene);
 	start_ray(scene, mlx, mlx_win);
 	mlx_loop(mlx);
 	return (0);
