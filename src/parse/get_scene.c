@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 12:18:27 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:21:59 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:13:10 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,49 @@ static void	get_capital_element(t_scene *scene, char **array, int *flag)
 		*flag = -1;
 }
 
+bool	get_obj(int type, t_scene *scene, void	*obj_data)
+{
+	t_object	*temp;
+
+	if (!scene->obj)
+	{
+		scene->obj = malloc(sizeof(t_object));
+		if (!scene->obj)
+			return (false);
+		scene->obj->type = type;
+		scene->obj->data = obj_data;
+		scene->obj->next = NULL;
+	}
+	else
+	{
+		temp = scene->obj;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = malloc(sizeof(t_object));
+		if (!temp->next)
+			return (false);
+		temp->next->type = type;
+		temp->next->data = obj_data;
+		temp->next->next = NULL;
+	}
+	return (scene->obj->data != NULL);
+}
+
 static void	get_double_element(t_scene *scene, char **array, int *flag)
 {
 	if (!ft_strcmp(array[0], "sp"))
 	{
-		if (!get_sp(&scene->sp, &array[1]))
+		if (!get_obj(SPHERE, scene, new_sp(&array[1])))
 			*flag = 0;
 	}
 	else if (!ft_strcmp(array[0], "pl"))
 	{
-		if (!get_pl(&scene->pl, &array[1]))
+		if (!get_obj(PLANE, scene, new_pl(&array[1])))
 			*flag = 0;
 	}
 	else if (!ft_strcmp(array[0], "cy"))
 	{
-		if (!get_cy(&scene->cy, &array[1]))
+		if (!get_obj(CYLINDER, scene, new_cy(&array[1])))
 			*flag = 0;
 	}
 	else
@@ -103,9 +131,7 @@ t_scene	*get_scene(int fd)
 	scene->a = NULL;
 	scene->c = NULL;
 	scene->l = NULL;
-	scene->sp = NULL;
-	scene->pl = NULL;
-	scene->cy = NULL;
+	scene->obj = NULL;
 	while (1)
 	{
 		line = get_next_line(fd);

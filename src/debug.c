@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 09:06:48 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/30 09:35:25 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/19 11:39:03 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,71 +59,50 @@ static void	print_scene_light(t_light *light)
 
 static void	print_scene_spheres(t_sphere *sphere)
 {
-	t_sphere	*temp;
-	int			i;
-
-	temp = sphere;
-	i = 0;
-	if (!temp)
-		return ;
-	printf("Spheres ---------------------------------------------\n");
-	while (temp)
-	{
-		printf("	Sphere[%d]\n", i);
-		printf("		Position: ");
-		print_coord(temp->pos);
-		printf("		Color: ");
-		print_color(temp->color);
-		printf("		Diameter: %f\n", temp->d);
-		i++;
-		temp = temp->next;
-	}
+	printf("	Sphere:\n");
+	printf("		Position: ");
+	print_coord(sphere->pos);
+	printf("		Color: ");
+	print_color(sphere->color);
+	printf("		Diameter: %f\n", sphere->d);
 }
 
 static void	print_scene_cylinders(t_cylinder *cylinder)
 {
-	t_cylinder	*temp;
-	int			i;
-
-	temp = cylinder;
-	i = 0;
-	if (!temp)
-		return ;
 	printf("Cylinders ---------------------------------------------\n");
-	while (temp)
-	{
-		printf("	Cylinder[%d]\n", i);
-		printf("		Position: ");
-		print_coord(temp->pos);
-		printf("		Color: ");
-		print_color(temp->color);
-		printf("		Diameter: %f\n", temp->d);
-		printf("		Height: %f\n", temp->h);
-		i++;
-		temp = temp->next;
-	}
+	printf("	Cylinder:\n");
+	printf("		Position: ");
+	print_coord(cylinder->pos);
+	printf("		Color: ");
+	print_color(cylinder->color);
+	printf("		Diameter: %f\n", cylinder->d);
+	printf("		Height: %f\n", cylinder->h);
 }
 
 static void	print_scene_planes(t_plane *plane)
 {
-	t_plane	*temp;
-	int		i;
-
-	temp = plane;
-	i = 0;
-	if (!temp)
-		return ;
 	printf("planes ---------------------------------------------\n");
+	printf("		Position: ");
+	print_coord(plane->pos);
+	printf("		Orientation: ");
+	print_coord(plane->ori);
+	printf("		Color: ");
+	print_color(plane->color);
+}
+
+void	print_objects(t_object *obj)
+{
+	t_object	*temp;
+
+	temp = obj;
 	while (temp)
 	{
-		printf("	plane[%d]\n", i);
-		printf("		Position: ");
-		print_coord(temp->pos);
-		printf("		Orientation: ");
-		print_coord(temp->ori);
-		printf("		Color: ");
-		print_color(temp->color);
-		i++;
+		if (temp->type == SPHERE)
+			print_scene_spheres(temp->data);
+		else if (temp->type == PLANE)
+			print_scene_planes(temp->data);
+		else if (temp->type == CYLINDER)
+			print_scene_cylinders(temp->data);
 		temp = temp->next;
 	}
 }
@@ -135,7 +114,5 @@ void	debug(t_scene *scene)
 	print_scene_amb_light(scene->a);
 	print_scene_camera(scene->c);
 	print_scene_light(scene->l);
-	print_scene_spheres(scene->sp);
-	print_scene_cylinders(scene->cy);
-	print_scene_planes(scene->pl);
+	print_objects(scene->obj);
 }

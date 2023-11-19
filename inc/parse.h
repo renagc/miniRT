@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:01:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/14 12:43:43 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:12:44 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,15 @@ typedef struct s_scene						t_scene;
 t_scene			*get_scene(int fd);
 
 //get_pl.c
+t_plane			*new_pl(char **array);
 int				get_pl(t_plane **pl_lst, char **array);
 
 //get_cy.c
+t_cylinder		*new_cy(char **array);
 int				get_cy(t_cylinder **cy_lst, char **array);
 
 //get_sp.c
+t_sphere		*new_sp(char **array);
 int				get_sp(t_sphere **sp_lst, char **array);
 
 //get_amb_light.c
