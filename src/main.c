@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/19 21:11:55 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/20 12:23:35 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_coord	canvas_to_viewport(double cx, double cy, t_viewport view)
 	return (vp);
 }
 
-bool	get_closest_obj(t_raytrace *rt, double t, int type, t_rgb *color, t_coord *pos)
+bool	get_closest_obj(t_raytrace *rt, double t, int type, t_rgb *color, t_coord *pos, void *obj)
 {
 	if (t < rt->closest.t)
 	{
@@ -60,6 +60,7 @@ bool	get_closest_obj(t_raytrace *rt, double t, int type, t_rgb *color, t_coord *
 		rt->closest.pos = pos;
 		rt->closest.type = type;
 		rt->closest.hit = true;
+		rt->closest.obj = obj;
 		return (true);
 	}
 	return (false);
@@ -83,9 +84,9 @@ bool	intersect_ray_sphere(double t_min, double t_max, t_raytrace *rt, t_sphere *
 	t[0] = (-b + sqrt(c)) / (2 * a);
 	t[1] = (-b - sqrt(c)) / (2 * a);
 	if (t[1] > t_min && t[1] < t_max && t[1] < t[0])
-		return (get_closest_obj(rt, t[1], SPHERE, sp->color, sp->pos));
+		return (get_closest_obj(rt, t[1], SPHERE, sp->color, sp->pos, sp));
 	if (t[0] > t_min && t[0] < t_max)
-		return (get_closest_obj(rt, t[0], SPHERE, sp->color, sp->pos));
+		return (get_closest_obj(rt, t[0], SPHERE, sp->color, sp->pos, sp));
 	return (false);
 }
 
@@ -93,16 +94,43 @@ bool	intersect_ray_plane(double t_min, double t_max, t_raytrace *rt, t_plane *pl
 {
 	t_coord	op;
 	double	vd;
+	double	x;
 	double	t;
 
-	op = subtract_const(&rt->ray_origin, plane->pos, 1);
-	vd = -product(plane->ori, &op);
-	if (vd == 0)
-		return (false);
-	t = vd / product(&rt->ray_canvas, plane->ori);
-	if (t > t_min && t < t_max)
-		return (get_closest_obj(rt, t, PLANE, plane->color, plane->pos));
+	vd = product(plane->ori, &rt->ray_canvas);
+	if (fabs(vd) > 0.000001)
+	{
+		op = subtract_const(plane->pos, &rt->ray_origin, 1);
+		x = product(&op, plane->ori);
+		t = x / vd;
+		if (t > t_min && t < t_max)
+			return (get_closest_obj(rt, t, PLANE, plane->color, plane->pos, plane));
+	}
 	return (false);
+}
+
+void	intersect_ray_cylinder(double t_min, double t_max, t_raytrace *rt, t_cylinder *cy)
+{
+	t_coord	op;
+	double	a;
+	double	b;
+	double	c;
+	double	disc;
+	double	t[2];
+
+	op = subtract_const(&rt->ray_origin, cy->ori, 1);
+	a = product(&rt->ray_canvas, &rt->ray_canvas) * pow(vec_length(cy->ori), 2) - pow(product(&rt->ray_canvas, cy->ori), 2);
+	b = 2 * product(&op, &rt->ray_canvas) * pow(vec_length(cy->ori), 2) - 2 * product(&rt->ray_canvas, cy->ori) * product(&op, cy->ori);
+	c = product(&op, &op) * pow(vec_length(cy->ori), 2) - pow(product(&op, cy->ori), 2) - pow(cy->d / 2, 2) * pow(vec_length(cy->ori), 2);
+	disc = b * b - 4 * a * c;
+	if (disc < 0)
+		return ;
+	t[0] = (-b + sqrt(disc)) / (2 * a);
+	t[1] = (-b - sqrt(disc)) / (2 * a);
+	if (t[0] > t_min && t[0] < t_max)
+		get_closest_obj(rt, t[0], CYLINDER, cy->color, cy->pos, cy);
+	if (t[1] > t_min && t[1] < t_max && t[1] < t[0])
+		get_closest_obj(rt, t[1], CYLINDER, cy->color, cy->pos, cy);
 }
 // void	intersect_ray_cylinder(double t_min, double t_max, t_raytrace *rt, t_cylinder *cylinder)
 // {
@@ -114,26 +142,20 @@ bool	intersect_ray_plane(double t_min, double t_max, t_raytrace *rt, t_plane *pl
 // 	double		ori;
 // 	double		t[2];
 
-// 	op = subtract_const(&rt->o, cylinder->pos, 1);
+// 	op = subtract_const(&rt->ray_origin, cylinder->pos, 1);
 // 	ori = vec_length(cylinder->ori) * vec_length(cylinder->ori);
-// 	a = product(&rt->d, &rt->d) * ori - product(&rt->d, cylinder->ori) * product(&rt->d, cylinder->ori);
-// 	b = 2 * product(&op, &rt->d) * ori - product(&rt->d, cylinder->ori) * product(&rt->d, cylinder->ori);
-// 	c = product(&op, &op) - ((cylinder->d / 2) * (cylinder->d / 2)) - product(&rt->d, cylinder->ori) * product(&rt->d, cylinder->ori);
+// 	a = product(&rt->ray_canvas, &rt->ray_canvas) * ori - product(&rt->ray_canvas, cylinder->ori) * product(&rt->ray_canvas, cylinder->ori);
+// 	b = 2 * product(&op, &rt->ray_canvas) * ori - product(&rt->ray_canvas, cylinder->ori) * product(&rt->ray_canvas, cylinder->ori);
+// 	c = product(&op, &op) - ((cylinder->d / 2) * (cylinder->d / 2)) - product(&rt->ray_canvas, cylinder->ori) * product(&rt->ray_canvas, cylinder->ori);
 // 	disc = b * b - 4 * a * c;
 // 	if (disc < 0)
 // 		return ;
 // 	t[0] = (-b + sqrt(disc)) / (2 * a);
 // 	t[1] = (-b - sqrt(disc)) / (2 * a);
-// 	if (t[0] < rt->closest.t && t[0] > t_min && t[0] < t_max)
-// 	{
-// 		rt->closest.obj = CYLINDER;
-// 		get_closest_obj(rt, t[0], cylinder);
-// 	}
-// 	if (t[1] < rt->closest.t && t[1] > t_min && t[1] < t_max)
-// 	{
-// 		rt->closest.obj = CYLINDER;
-// 		get_closest_obj(rt, t[1], cylinder);
-// 	}
+// 	if (t[0] > t_min && t[0] < t_max)
+// 		get_closest_obj(rt, t[0], CYLINDER, cylinder->color, cylinder->pos, cylinder);
+// 	if (t[1] > t_min && t[1] < t_max && t[1] < t[0])
+// 		get_closest_obj(rt, t[1], CYLINDER, cylinder->color, cylinder->pos, cylinder);
 // }
 
 void	closest_intersection(double t_min, double t_max, t_raytrace *rt, t_scene *scene)
@@ -147,8 +169,8 @@ void	closest_intersection(double t_min, double t_max, t_raytrace *rt, t_scene *s
 			intersect_ray_plane(t_min, t_max, rt, temp->data);
 		else if (temp->type == SPHERE)
 			intersect_ray_sphere(t_min, t_max, rt, temp->data);
-		// else if (temp->type == CYLINDER)
-		// 	rt->closest.hit = intersect_ray_cylinder(t_min, t_max, &t, rt, temp);
+		else if (temp->type == CYLINDER)
+			intersect_ray_cylinder(t_min, t_max, rt, temp->data);
 		temp = temp->next;
 	}
 }
@@ -158,20 +180,26 @@ double	compute_light(t_raytrace *rt, t_coord *n, t_scene *scene)
 	double		i;
 	double		n_dot_l;
 	t_rgb		*color;
+	double		type;
 
 	i = 0.0;
 	color = rt->closest.color;
+	type = rt->closest.type;
+	rt->closest.t = 1;
 	if (scene->a)
 		i += scene->a->ratio;
 	if (scene->l)
 	{
-		rt->ray_canvas = subtract_const(scene->l->pos, &rt->ray_canvas, 1);
+		rt->ray_canvas = subtract_const(scene->l->pos, &rt->ray_origin, 1);
+		rt->closest.hit = false;
 		closest_intersection(0.001, __DBL_MAX__, rt, scene);
 		rt->closest.color = color;
 		if (rt->closest.hit == false)
 		{
 			n_dot_l = product(n, &rt->ray_canvas);
-			if (n_dot_l > 0)
+			if (type == PLANE)
+				i += scene->l->ratio * fabs(n_dot_l) / (vec_length(n) * vec_length(&rt->ray_canvas));
+			else if (n_dot_l > 0)
 				i += scene->l->ratio * n_dot_l / (vec_length(n) * vec_length(&rt->ray_canvas));
 		}
 	}
@@ -192,13 +220,15 @@ t_rgb	*trace_ray(t_raytrace *rt, t_scene *scene)
 	closest_intersection(1, __DBL_MAX__, rt, scene);
 	if (rt->closest.hit == false)
 		return (NULL);
-	if (rt->closest.type == SPHERE)
-		printf("plane");
-	(void)n;
-	// rt->ray_origin = add_const(&rt->ray_origin, &rt->ray_canvas, rt->closest.t);
-	// n = subtract_const(&rt->ray_origin, rt->closest.pos, 1);
-	// vec_normalize(&n);
-	return (multiply_color(rt->closest.color, 0.3));//compute_light(rt, &n, scene)));
+	rt->ray_origin = add_const(&rt->ray_origin, &rt->ray_canvas, rt->closest.t);
+	if (rt->closest.type == PLANE)
+		n = *((t_plane *)rt->closest.obj)->ori;
+	else
+	{
+		n = subtract_const(&rt->ray_origin, rt->closest.pos, 1);
+		vec_normalize(&n);
+	}
+	return (multiply_color(rt->closest.color, compute_light(rt, &n, scene)));
 }
 
 void	start_ray(t_scene *scene, void *mlx, void *mlx_window)

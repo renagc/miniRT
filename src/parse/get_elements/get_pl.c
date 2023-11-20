@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 10:15:46 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/14 12:43:43 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/20 11:15:53 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,7 @@ t_plane	*new_pl(char **array)
 		free(new);
 		return (NULL);
 	}
+	vec_normalize(new->ori);
 	new->next = NULL;
 	return (new);
-}
-
-int	get_pl(t_plane **pl_lst, char **array)
-{
-	t_plane	*temp;
-
-	temp = *pl_lst;
-	if (!temp)
-	{
-		*pl_lst = new_pl(array);
-		if (!(*pl_lst))
-			return (0);
-	}
-	else
-	{
-		while (temp->next)
-			temp = temp->next;
-		temp->next = new_pl(array);
-		if (!temp->next)
-			return (0);
-	}
-	return (1);
 }
