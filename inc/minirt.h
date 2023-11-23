@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/19 21:22:41 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:29:12 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ struct s_closest
 	t_coord		*pos;
 	t_rgb		*color;
 	double		t;
+	double		x;
 };
 
 struct s_inter
