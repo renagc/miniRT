@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/23 15:40:01 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:16:45 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,51 +217,151 @@ t_coord		get_cylinder_normal(t_coord *point, t_cylinder *cylinder)
 // 			*t = t1;
 // 	}
 // 	return (1);
-// }
+//
 
-int	intersect_ray_cylinder(double t_min, double t_max, t_raytrace *rt, t_cylinder *cy)
-{
-	t_coord op = subtract_const(&rt->ray_origin, cy->pos, 1);
-    double a = rt->ray_canvas.x * rt->ray_canvas.x + rt->ray_canvas.y * rt->ray_canvas.y;
-    double b = 2 * op.x * rt->ray_canvas.x + 2 * op.y * rt->ray_canvas.y;
-    double c = op.x * op.x + op.y * op.y - (cy->d / 2 * cy->d / 2);
+// Function to transform a 3D point using a transformation matrix
+t_coord transform_point(t_coord point, double matrix[4][4]) {
+    t_coord result;
+    result.x = matrix[0][0] * point.x + matrix[0][1] * point.y + matrix[0][2] * point.z + matrix[0][3];
+    result.y = matrix[1][0] * point.x + matrix[1][1] * point.y + matrix[1][2] * point.z + matrix[1][3];
+    result.z = matrix[2][0] * point.x + matrix[2][1] * point.y + matrix[2][2] * point.z + matrix[2][3];
+    return result;
+}
 
+// Function to transform a 3D direction vector using a transformation matrix
+t_coord transform_direction(t_coord direction, double matrix[4][4]) {
+    t_coord result;
+    result.x = matrix[0][0] * direction.x + matrix[0][1] * direction.y + matrix[0][2] * direction.z;
+    result.y = matrix[1][0] * direction.x + matrix[1][1] * direction.y + matrix[1][2] * direction.z;
+    result.z = matrix[2][0] * direction.x + matrix[2][1] * direction.y + matrix[2][2] * direction.z;
+    return result;
+}
+
+
+int intersect_ray_cylinder(double t_min, double t_max, t_raytrace *rt, t_cylinder *cy) {
+    t_coord op = subtract_const(&rt->ray_origin, cy->pos, 1);
+
+    // Normalize the orientation vector of the cylinder
+    t_coord cylinder_axis = {cy->ori->x / vec_length(cy->ori), cy->ori->y / vec_length(cy->ori), cy->ori->z / vec_length(cy->ori)};
+
+    // Calculate the transformation matrix to align the cylinder with the z-axis
+    t_coord up = {0, 0, 1}; // The world up vector
+	if (fabs(cylinder_axis.x) == 0 && fabs(cylinder_axis.y) == 0)
+		up.x = 1;
+    t_coord right = cross_product(&up, &cylinder_axis);
+    t_coord new_up = cross_product(&cylinder_axis, &right);
+
+    // Create the transformation matrix
+    double transform_matrix[4][4] = {
+        {right.x, right.y, right.z, 0},
+        {new_up.x, new_up.y, new_up.z, 0},
+        {cylinder_axis.x, cylinder_axis.y, cylinder_axis.z, 0},
+        {0, 0, 0, 1}
+    };
+
+    // Transform the ray direction and origin into the local coordinate system
+    t_coord local_ray_origin = transform_point(op, transform_matrix);
+    t_coord local_ray_dir = transform_direction(rt->ray_canvas, transform_matrix);
+
+    // Calculate coefficients for the quadratic equation
+    double a = local_ray_dir.x * local_ray_dir.x + local_ray_dir.y * local_ray_dir.y;
+    double b = 2 * (local_ray_origin.x * local_ray_dir.x + local_ray_origin.y * local_ray_dir.y);
+    double c = local_ray_origin.x * local_ray_origin.x + local_ray_origin.y * local_ray_origin.y - (cy->d / 2 * cy->d / 2);
+
+    // Calculate the discriminant
     double discriminant = b * b - 4 * a * c;
-    if (discriminant < 0)
+    
+    if (discriminant < 0) {
         return -1; // No real roots, ray does not intersect cylinder
+    }
 
+    // Calculate the two roots of the quadratic equation
     double root1 = (-b + sqrt(discriminant)) / (2 * a);
     double root2 = (-b - sqrt(discriminant)) / (2 * a);
 
-    double z1 = op.z + root1 * rt->ray_canvas.z;
-    double z2 = op.z + root2 * rt->ray_canvas.z;
+    // Calculate the z-coordinates at the intersection points
+    double z1 = local_ray_origin.z + root1 * local_ray_dir.z;
+    double z2 = local_ray_origin.z + root2 * local_ray_dir.z;
 
-    if (z1 > -cy->h/2 && z1 < cy->h/2 && root1 > t_min && root1 < t_max)
-	{
-		if (get_closest_obj(rt, root1, CYLINDER, cy->color, cy->pos, cy))
-			rt->closest.x = 0;
-	}
-    if (z2 > -cy->h/2 && z2 < cy->h/2 && root2 > t_min && root2 < t_max && root2 < root1)
-	{
-		if (get_closest_obj(rt, root2, CYLINDER, cy->color, cy->pos, cy))
-			rt->closest.x = 0;
-	}
-    double tCap1 = (cy->h / 2 - op.z) / rt->ray_canvas.z;
-    t_coord pCap1 = { op.x + tCap1 * rt->ray_canvas.x, op.y + tCap1 * rt->ray_canvas.y, cy->h / 2 };
-    double tCap2 = (-cy->h / 2 - op.z) / rt->ray_canvas.z;
-    t_coord pCap2 = { op.x + tCap2 * rt->ray_canvas.x, op.y + tCap2 * rt->ray_canvas.y, -cy->h / 2 };
-    if (tCap1 > t_min && tCap1 < t_max && ((pCap1.x * pCap1.x + pCap1.y * pCap1.y) < pow(cy->d / 2, 2)))
-	{
-		if (get_closest_obj(rt, tCap1, CYLINDER, cy->color, cy->pos, cy))
-			rt->closest.x = 1;
-	}
-    if (tCap2 > t_min && tCap2 < t_max && ((pCap2.x * pCap2.x + pCap2.y * pCap2.y) < pow(cy->d / 2, 2)) && tCap2 < tCap1)
-	{
-		if (get_closest_obj(rt, tCap2, CYLINDER, cy->color, cy->pos, cy))
-			rt->closest.x = 1;
-	}
-    return (-1);
+    // Check if the intersection points are within the height range of the cylinder
+    if (z1 > -cy->h / 2 && z1 < cy->h / 2 && root1 > t_min && root1 < t_max) {
+        if (get_closest_obj(rt, root1, CYLINDER, cy->color, cy->pos, cy))
+            rt->closest.x = 0;
+    }
+
+    if (z2 > -cy->h / 2 && z2 < cy->h / 2 && root2 > t_min && root2 < t_max && root2 < root1) {
+        if (get_closest_obj(rt, root2, CYLINDER, cy->color, cy->pos, cy))
+            rt->closest.x = 0;
+    }
+
+    // Calculate the t-values for the cylinder caps
+    double tCap1 = (-cy->h / 2 - local_ray_origin.z) / local_ray_dir.z;
+    double tCap2 = (cy->h / 2 - local_ray_origin.z) / local_ray_dir.z;
+
+    // Calculate the intersection points on the cylinder caps
+    t_coord pCap1 = {local_ray_origin.x + tCap1 * local_ray_dir.x, local_ray_origin.y + tCap1 * local_ray_dir.y, -cy->h / 2};
+    t_coord pCap2 = {local_ray_origin.x + tCap2 * local_ray_dir.x, local_ray_origin.y + tCap2 * local_ray_dir.y, cy->h / 2};
+
+    // Check if the intersection points on the caps are within the cylinder's radius
+    if (tCap1 > t_min && tCap1 < t_max && (pCap1.x * pCap1.x + pCap1.y * pCap1.y) < (cy->d / 2 * cy->d / 2)) {
+        if (get_closest_obj(rt, tCap1, CYLINDER, cy->color, cy->pos, cy))
+            rt->closest.x = 1;
+    }
+
+    if (tCap2 > t_min && tCap2 < t_max && (pCap2.x * pCap2.x + pCap2.y * pCap2.y) < (cy->d / 2 * cy->d / 2)) {
+        if (get_closest_obj(rt, tCap2, CYLINDER, cy->color, cy->pos, cy))
+            rt->closest.x = 1;
+    }
+
+    return -1;
 }
+
+
+
+
+// int	intersect_ray_cylinder(double t_min, double t_max, t_raytrace *rt, t_cylinder *cy)
+// {
+// 	t_coord op = subtract_const(&rt->ray_origin, cy->pos, 1);
+//     double a = rt->ray_canvas.x * rt->ray_canvas.x + rt->ray_canvas.y * rt->ray_canvas.y;
+//     double b = 2 * op.x * rt->ray_canvas.x + 2 * op.y * rt->ray_canvas.y;
+//     double c = op.x * op.x + op.y * op.y - (cy->d / 2 * cy->d / 2);
+
+//     double discriminant = b * b - 4 * a * c;
+//     if (discriminant < 0)
+//         return -1; // No real roots, ray does not intersect cylinder
+
+//     double root1 = (-b + sqrt(discriminant)) / (2 * a);
+//     double root2 = (-b - sqrt(discriminant)) / (2 * a);
+
+//     double z1 = op.z + root1 * rt->ray_canvas.z;
+//     double z2 = op.z + root2 * rt->ray_canvas.z;
+
+//     if (z1 > -cy->h/2 && z1 < cy->h/2 && root1 > t_min && root1 < t_max)
+// 	{
+// 		if (get_closest_obj(rt, root1, CYLINDER, cy->color, cy->pos, cy))
+// 			rt->closest.x = 0;
+// 	}
+//     if (z2 > -cy->h/2 && z2 < cy->h/2 && root2 > t_min && root2 < t_max && root2 < root1)
+// 	{
+// 		if (get_closest_obj(rt, root2, CYLINDER, cy->color, cy->pos, cy))
+// 			rt->closest.x = 0;
+// 	}
+//     double tCap1 = (cy->h / 2 - op.z) / rt->ray_canvas.z;
+//     t_coord pCap1 = { op.x + tCap1 * rt->ray_canvas.x, op.y + tCap1 * rt->ray_canvas.y, cy->h / 2 };
+//     double tCap2 = (-cy->h / 2 - op.z) / rt->ray_canvas.z;
+//     t_coord pCap2 = { op.x + tCap2 * rt->ray_canvas.x, op.y + tCap2 * rt->ray_canvas.y, -cy->h / 2 };
+//     if (tCap1 > t_min && tCap1 < t_max && ((pCap1.x * pCap1.x + pCap1.y * pCap1.y) < pow(cy->d / 2, 2)))
+// 	{
+// 		if (get_closest_obj(rt, tCap1, CYLINDER, cy->color, cy->pos, cy))
+// 			rt->closest.x = 1;
+// 	}
+//     if (tCap2 > t_min && tCap2 < t_max && ((pCap2.x * pCap2.x + pCap2.y * pCap2.y) < pow(cy->d / 2, 2)) && tCap2 < tCap1)
+// 	{
+// 		if (get_closest_obj(rt, tCap2, CYLINDER, cy->color, cy->pos, cy))
+// 			rt->closest.x = 1;
+// 	}
+//     return (-1);
+// }
 
 // void	intersect_ray_cylinder(double t_min, double t_max, t_raytrace *rt, t_cylinder *cylinder)
 // {
@@ -327,6 +427,7 @@ double	compute_light(t_raytrace *rt, t_coord *n, t_scene *scene)
 		x_x = rt->closest.x;
 		closest_intersection(0.00000001, __DBL_MAX__, rt, scene);
 		rt->closest.color = color;
+		//quando estiver dentro do objeto é totalmente escuro - interseção do objeto consigo proprio
 		rt->closest.x = x_x;
 		if (rt->closest.hit == false)
 		{
@@ -346,7 +447,6 @@ t_rgb	*trace_ray(t_raytrace *rt, t_scene *scene)
 {
 	t_coord		n;
 
-	rt->ray_origin = *scene->c->pos;
 	rt->closest.t = __DBL_MAX__;
 	rt->closest.hit = false;
 	rt->closest.color = NULL;
@@ -375,8 +475,14 @@ void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
 	t_image		img;
 	t_viewport	vp;
 	t_raytrace	rt;
+	t_matrix	m;
+	t_coord		vec;
 	t_rgb		*color;
 
+	vec.x = 0;
+	vec.y = 0;
+	vec.z = 0;
+	m = look_at(scene->c->pos, scene->c->ori);
 	vp = get_viewport_dimensions(scene->c->fov);
 	img = ft_new_image(mlx, C_W, C_H);
 	x = - (C_W / 2) - 1;
@@ -385,7 +491,11 @@ void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
 		y = - (C_H / 2) - 1;
 		while (++y < (C_H / 2))
 		{
+			rt.ray_origin = multiply_by_matrix(vec, m);
 			rt.ray_canvas = canvas_to_viewport(x, y, vp);
+			rt.ray_canvas = multiply_by_matrix(rt.ray_canvas, m);
+			rt.ray_canvas = subtract_const(&rt.ray_canvas, &rt.ray_origin, 1);
+			vec_normalize(&rt.ray_canvas);
 			color = trace_ray(&rt, scene);
 			turn_pixel_to_color(&img.pixels[(x + C_W / 2) * 4 + img.line_size * (-y + C_H / 2)], color);
 		}

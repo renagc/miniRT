@@ -39,7 +39,7 @@ int	is_double(char *str)
 t_coord	*get_coord(char *str)
 {
 	t_coord	*xyz;
-	char		**array;
+	char	**array;
 
 	array = ft_split_pop_back(str, ",");
 	if (!array)

@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:01:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/31 11:46:44 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:34:54 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_coord						t_coord;
 typedef struct s_vector						t_vector;
 typedef struct s_scene						t_scene;
 typedef struct s_sphere						t_sphere;
+typedef struct s_matrix						t_matrix;
 
 // ----------------------------- FUNCTIONS ---------------------------------- //
 
@@ -43,5 +44,9 @@ t_coord		cross(t_coord *a, t_coord *b);
 //sphere.c
 double		*ray_intersect_sphere(t_scene *scene, t_sphere *sphere, \
 			t_vector *d);
+
+t_matrix	look_at(t_coord *origin, t_coord *cam_vector);
+t_coord		multiply_by_matrix(t_coord p, t_matrix m);
+t_coord		cross_product(t_coord *a, t_coord *b);
 
 #endif

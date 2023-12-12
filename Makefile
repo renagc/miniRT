@@ -25,6 +25,7 @@ SRC			=	src/main.c \
 				src/math/vector.c \
 				src/math/sphere.c \
 				src/mlx_utils.c \
+				src/matrix.c \
 				src/parse/parse.c \
 				src/parse/get_scene.c \
 				src/parse/free_scene.c \

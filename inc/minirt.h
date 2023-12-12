@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/20 18:29:12 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:32:26 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ typedef struct s_plane						t_plane;
 typedef struct s_cylinder					t_cylinder;
 typedef struct s_scene						t_scene;
 typedef struct s_vector						t_vector;
-typedef struct s_matrix						t_matrix;
 typedef struct s_raytrace					t_raytrace;
 typedef struct s_closest					t_closest;
 typedef struct s_object						t_object;
 typedef struct s_inter						t_inter;
+typedef struct s_matrix						t_matrix;
 
 struct s_scene
 {
@@ -136,13 +136,6 @@ struct s_cylinder
 	struct s_cylinder	*next;
 };
 
-struct s_matrix
-{
-	t_coord	x;
-	t_coord	y;
-	t_coord	z;
-};
-
 struct s_closest
 {
 	bool		hit;
@@ -165,6 +158,11 @@ struct s_raytrace
 	t_coord		ray_origin;
 	t_coord		ray_canvas;
 	t_closest	closest;
+};
+
+struct s_matrix
+{
+	double	m[4][4];
 };
 
 enum e_objects
