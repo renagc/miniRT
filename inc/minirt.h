@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/27 10:32:26 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:56:34 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@
 # ifndef C_H
 #  define C_H 500
 # endif
+
+// ------------------------------ HOOKS ----------------------------------- //
+
+# define KEY_PRESS		2
+# define KEY_RELEASE	3
+# define X_WINBUTTON	17
+# define KEY_ESC		65307
 
 // ------------------------------ STRUCTS ----------------------------------- //
 
@@ -59,6 +66,8 @@ struct s_scene
 	t_plane		*pl;
 	t_cylinder	*cy;
 	t_object	*obj;
+	void		*mlx_win;
+	void		*mlx;
 };
 
 struct s_object

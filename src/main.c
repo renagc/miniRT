@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/12 16:16:45 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:57:48 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -503,6 +503,29 @@ void	start_ray(t_scene *scene, void *mlx, void *mlx_window)
 	mlx_put_image_to_window(mlx, mlx_window, img.reference, 0, 0);
 }
 
+void	ft_end(t_scene *scene)
+{
+	mlx_destroy_window(scene->mlx, scene->mlx_win);
+	mlx_destroy_display(scene->mlx);
+	free(scene->mlx);
+	exit(0);
+}
+
+int	ft_xbutton(t_scene *scene)
+{
+	ft_end(scene);
+	free_scene(scene);
+	return (0);
+}
+
+int	ft_escbutton(int key, t_scene *scene)
+{
+	ft_end(scene);
+	if (key == KEY_ESC)
+		free_scene(scene);
+	return (1);
+}
+
 int	main(int ac, char **av)
 {
 	t_scene	*scene;
@@ -512,9 +535,14 @@ int	main(int ac, char **av)
 	scene = NULL;
 	parse(ac, av, &scene);
 	mlx = mlx_init();
+	scene->mlx = mlx;
 	mlx_win = mlx_new_window(mlx, C_W, C_H, "Test");
+	scene->mlx_win = mlx_win;
 	debug(scene);
 	start_ray(scene, mlx, mlx_win);
+	mlx_hook(mlx_win, X_WINBUTTON, 1L << 3, &ft_xbutton, &scene);
+	mlx_hook(mlx_win, KEY_PRESS, 1, ft_escbutton, &scene);
+	mlx_hook(mlx_win, KEY_RELEASE, 1, ft_escbutton, &scene);
 	mlx_loop(mlx);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rotation.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 10:54:11 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/31 12:22:37 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:52:07 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,36 +74,36 @@ t_coord	rotate_vector(t_coord vector, t_coord rotation)
     return (rotated);
 }
 
-t_matrix	create_rotation_matrix(t_coord *ori)
-{
-	double		dot_product;
-	t_matrix	matrix;
-	t_coord		rot_axis;
-	t_coord		temp_ori;
-	double		angle;
-	double		c;
-	double		s;
-
-	temp_ori.x = ori->x;
-	temp_ori.y = ori->y;
-	temp_ori.z = ori->z;
-	vec_normalize(&temp_ori);
-	rot_axis = rotation_axis(&temp_ori, &dot_product);
-	angle = acos(dot_product);
-	c = cos(angle);
-	s = sin(angle);
-	matrix.x = matrix_x(&rot_axis, c, s, 1.0 - c);
-	matrix.y = matrix_y(&rot_axis, c, s, 1.0 - c);
-	matrix.z = matrix_z(&rot_axis, c, s, 1.0 - c);
-	return (matrix);
-}
-
-t_coord	rotate_camera(t_coord orientation_vector, t_matrix rotation_matrix)
-{
-	t_coord	rotated;
-
-	rotated.x = rotation_matrix.x.x * orientation_vector.x + rotation_matrix.x.y * orientation_vector.y + rotation_matrix.x.z * orientation_vector.z;
-	rotated.y = rotation_matrix.y.x * orientation_vector.x + rotation_matrix.y.y * orientation_vector.y + rotation_matrix.y.z * orientation_vector.z;
-	rotated.z = rotation_matrix.z.x * orientation_vector.x + rotation_matrix.z.y * orientation_vector.y + rotation_matrix.z.z * orientation_vector.z;
-	return (rotated);
-}
+// t_matrix	create_rotation_matrix(t_coord *ori)
+// {
+	// double		dot_product;
+	// t_matrix	matrix;
+	// t_coord		rot_axis;
+	// t_coord		temp_ori;
+	// double		angle;
+	// double		c;
+	// double		s;
+// 
+	// temp_ori.x = ori->x;
+	// temp_ori.y = ori->y;
+	// temp_ori.z = ori->z;
+	// vec_normalize(&temp_ori);
+	// rot_axis = rotation_axis(&temp_ori, &dot_product);
+	// angle = acos(dot_product);
+	// c = cos(angle);
+	// s = sin(angle);
+	// matrix.x = matrix_x(&rot_axis, c, s, 1.0 - c);
+	// matrix.y = matrix_y(&rot_axis, c, s, 1.0 - c);
+	// matrix.z = matrix_z(&rot_axis, c, s, 1.0 - c);
+	// return (matrix);
+// }
+// 
+// t_coord	rotate_camera(t_coord orientation_vector, t_matrix rotation_matrix)
+// {
+	// t_coord	rotated;
+// 
+	// rotated.x = rotation_matrix.x.x * orientation_vector.x + rotation_matrix.x.y * orientation_vector.y + rotation_matrix.x.z * orientation_vector.z;
+	// rotated.y = rotation_matrix.y.x * orientation_vector.x + rotation_matrix.y.y * orientation_vector.y + rotation_matrix.y.z * orientation_vector.z;
+	// rotated.z = rotation_matrix.z.x * orientation_vector.x + rotation_matrix.z.y * orientation_vector.y + rotation_matrix.z.z * orientation_vector.z;
+	// return (rotated);
+// }
