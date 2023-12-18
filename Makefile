@@ -21,22 +21,26 @@ LIBFT_A		=	lib/libft/libft.a
 SRC			=	src/main.c \
 				src/debug.c \
 				src/utils.c \
-				src/rotation.c \
+				src/math/math_1.c \
 				src/math/vector.c \
 				src/math/sphere.c \
 				src/mlx_utils.c \
 				src/matrix.c \
+				src/inter.c \
+				src/inter_cy_utils_1.c \
+				src/inter_cy_utils_2.c \
+				src/raytrace.c \
+				src/hooks.c \
+				src/transform.c \
+				src/lights.c \
 				src/parse/parse.c \
 				src/parse/get_scene.c \
 				src/parse/free_scene.c \
 				src/parse/utils.c \
 				src/parse/get_elements/get_camera.c \
-				src/parse/get_elements/get_cy.c \
 				src/parse/get_elements/get_light.c \
-				src/parse/get_elements/get_pl.c \
-				src/parse/get_elements/get_rgb.c \
-				src/parse/get_elements/get_sp.c \
-				src/parse/get_elements/get_coord.c
+				src/parse/get_elements/new_object.c \
+				src/parse/get_elements/set_utils.c
 
 #Object files
 OBJ			=	$(SRC:%.c=%.o)
@@ -73,7 +77,18 @@ fclean: clean
 
 re: fclean all
 
-val: re
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp --track-fds=yes --track-origins=yes ./$(NAME) 2>valgrind.log
+debug: re
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./$(NAME) 2>valgrind.log
+
+debugmac: all
+	@echo "$(BLACK)Compiling libft...$(COLOUR_END)"
+	@make --silent -C $(LIBFT_DIR)
+	@echo "$(GREEN)libft successfully compiled.$(COLOUR_END)"
+	@echo "$(BLACK)Compiling $(NAME)...$(COLOUR_END)"
+	@$(CC) $(CFLAGS) -o $(@) -I/usr/local/include $(SRC) $(O_FLAGS) $(LIBFT_A)
+	@echo "$(GREEN)$(NAME) successfully compiled.$(COLOUR_END)"
+	@echo "$(YELLOW)Running $(NAME)...$(COLOUR_END)"
+	@./$(NAME)
+
 
 .PHONY: all clean fclean re bonus

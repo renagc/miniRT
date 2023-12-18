@@ -18,7 +18,7 @@ src/ft_itoa.c                   src/ft_memcpy.c                 src/ft_strlcat.c
 src/ft_lstadd_back.c            src/ft_memmove.c                src/ft_strlcpy.c                src/ft_strcmp.c \
 src/ft_lstadd_front.c           src/ft_memset.c                 src/ft_strlen.c                 src/ft_pop_back.c\
 src/ft_lstclear.c               src/ft_putchar_fd.c             src/ft_strmapi.c                src/ft_print_array.c \
-src/ft_atoi_dbl.c				src/ft_arraylen.c				src/ft_split_set.c
+src/ft_atod.c				src/ft_arraylen.c				src/ft_split_set.c
 
 OBJ = $(SRC:.c=.o)
 

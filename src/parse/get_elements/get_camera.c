@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 19:36:18 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/14 12:43:43 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/18 09:39:25 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	is_fov(char *str)
 	return (1);
 }
 
-int	is_coord(t_coord *coord)
+int	is_vector(t_coord *coord)
 {
 	if (coord->x < -1.0 || coord->x > 1.0)
 		return (0);
@@ -49,14 +49,12 @@ t_camera	*get_camera(char **array)
 	new = malloc(sizeof(t_camera));
 	if (!new)
 		return (NULL);
-	new->pos = get_coord(array[0]);
-	if (!new->pos)
+	if (!set_coord(array[0], &new->pos) || !set_coord(array[1], &new->ori))
 	{
 		free(new);
 		return (NULL);
 	}
-	new->ori = get_coord(array[1]);
-	if (!new->ori || !is_coord(new->ori) || !is_fov(array[2]))
+	if (!is_vector(&new->ori) || !is_fov(array[2]))
 	{
 		free(new);
 		return (NULL);

@@ -6,13 +6,13 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 22:32:55 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/14 12:27:15 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/18 09:20:22 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-static int	is_ratio(char *str)
+static bool	is_ratio(char *str)
 {
 	int		i;
 	bool	point;
@@ -24,49 +24,39 @@ static int	is_ratio(char *str)
 	while (str && str[i])
 	{
 		if (!ft_isdigit(str[i]) && str[i] != '.')
-			return (0);
+			return (false);
 		else if (!point && str[i] == '.')
 			point = true;
 		else if (point && str[i] == '.')
-			return (0);
+			return (false);
 		i++;
 	}
-	return (1);
+	return (true);
 }
 
-static double	get_ratio(char *str)
+static bool	set_ratio(char *str, double *ratio)
 {
-	double	min;
-	double	max;
-	double	n;
-
-	min = 0.0;
-	max = 1.0;
-	n = ft_atoi_dbl(str);
-	if (n >= min && n <= max)
-		return (n);
-	return (-1);
+	*ratio = ft_atod(str);
+	if (is_ratio(str) && *ratio >= 0.0 && *ratio <= 1.0)
+		return (true);
+	return (false);
 }
 
 t_light	*get_light(char **array)
 {
 	t_light	*light;
 
-	if (ft_arraylen(array) != 2 && ft_arraylen(array) != 3)
-		return (NULL);
-	if (!is_ratio(array[1]))
+	if (ft_arraylen(array) != 2)
 		return (NULL);
 	light = malloc(sizeof(t_light));
 	if (!light)
 		return (NULL);
-	light->pos = get_coord(array[0]);
-	if (!light->pos)
+	if (!set_coord(array[0], &light->pos))
 	{
 		free(light);
 		return (NULL);
 	}
-	light->ratio = get_ratio(array[1]);
-	if (light->ratio < 0)
+	if (!set_ratio(array[1], &light->ratio) || light->ratio < 0)
 	{
 		free(light);
 		return (NULL);
@@ -80,22 +70,12 @@ t_amb_light	*get_amb_light(char **array)
 
 	if (ft_arraylen(array) != 2)
 		return (NULL);
-	if (!is_ratio(array[0]))
-		return (NULL);
 	amb = malloc(sizeof(t_amb_light));
 	if (!amb)
 		return (NULL);
-	amb->ratio = get_ratio(array[0]);
-	if (amb->ratio < 0)
-	{
+	if (!set_ratio(array[0], &(amb->ratio)))
 		free(amb);
-		return (NULL);
-	}
-	amb->color = get_rgb(array[1]);
-	if (!amb->color)
-	{
+	else if (!set_color(array[1], &(amb->color)))
 		free(amb);
-		return (NULL);
-	}
 	return (amb);
 }

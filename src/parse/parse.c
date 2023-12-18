@@ -6,22 +6,23 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:02:28 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/10 12:08:39 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/17 19:52:47 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-static void	error_parse(char *display_error)
+static void	exit_program(char *error_msg, t_scene *scene)
 {
-	ft_putstr_fd(display_error, 2);
-	ft_putstr_fd("\n", 2);
-}
-
-static void	exit_parse(char *display_error)
-{
-	if (display_error)
-		error_parse(display_error);
+	if (error_msg)
+	{
+		ft_putstr_fd(error_msg, 2);
+		ft_putstr_fd("\n", 2);
+	}
+	if (scene)
+	{
+		free(scene);
+	}
 	exit(1);
 }
 
@@ -50,20 +51,14 @@ void	parse(int ac, char **av, t_scene **scene)
 	int		fd;
 
 	if (ac != 2)
-		exit_parse("This program only take 2 arguments");
+		exit_program("This program only take 2 arguments", *scene);
 	if (check_file_name(av[1]))
-		exit_parse("Filename not valid");
+		exit_program("Filename not valid", *scene);
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
-	{
-		perror("Error");
-		exit(1);
-	}
+		exit_program("File not found", *scene);
 	*scene = get_scene(fd);
-	if (!scene)
-	{
-		close(fd);
-		exit_parse("Scene Error");
-	}
 	close(fd);
+	if (!scene)
+		exit_program("Scene Error", *scene);
 }

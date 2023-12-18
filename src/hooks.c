@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 17:16:49 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/15 15:21:18 by rgomes-c         ###   ########.fr       */
+/*   Created: 2023/12/18 21:03:07 by rgomes-c          #+#    #+#             */
+/*   Updated: 2023/12/18 21:03:13 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-char	**ft_split_pop_back(char *str, char *set)
+int	ft_xbutton(t_scene *scene)
 {
-	char	**array;
-	int		i;
+	free_scene(scene);
+	return (0);
+}
 
-	i = -1;
-	while (str[++i])
-	{
-		if (ft_strchr(set, str[i]))
-			str[i] = 1;
-	}
-	array = ft_split(str, 1);
-	i = -1;
-	return (array);
+int	ft_escbutton(int key, t_scene *scene)
+{
+	if (key == KEY_ESC)
+		free_scene(scene);
+	return (1);
 }

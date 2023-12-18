@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 10:37:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:07:04 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/15 15:38:05 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_strcmp(char *s1, char *s2);
 void	ft_pop_back(char **str);
 void	ft_print_array(char **array);
-double	ft_atoi_dbl(const char *str);
+double	ft_atod(const char *str);
 size_t	ft_arraylen(char **array);
 char	**ft_split_set(char *str, char *set);
 

@@ -6,34 +6,35 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 12:18:27 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/17 18:13:10 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/18 10:59:35 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-static void	get_capital_element(t_scene *scene, char **array, int *flag)
+bool	get_el(int name, t_scene *scene, char **array)
 {
-	if (!ft_strcmp(array[0], "A") && !scene->a)
+	if (name == A)
 	{
-		scene->a = get_amb_light(&array[1]);
+		scene->a = get_amb_light(array);
 		if (!scene->a)
-			*flag = 0;
+			return (false);
 	}
-	else if (!ft_strcmp(array[0], "C") && !scene->c)
+	else if (name == C)
 	{
-		scene->c = get_camera(&array[1]);
+		scene->c = get_camera(array);
 		if (!scene->c)
-			*flag = 0;
+			return (false);
 	}
-	else if (!ft_strcmp(array[0], "L") && !scene->l)
+	else if (name == L)
 	{
-		scene->l = get_light(&array[1]);
+		scene->l = get_light(array);
 		if (!scene->l)
-			*flag = 0;
+			return (false);
 	}
 	else
-		*flag = -1;
+		return (false);
+	return (true);
 }
 
 bool	get_obj(int type, t_scene *scene, void	*obj_data)
@@ -64,66 +65,56 @@ bool	get_obj(int type, t_scene *scene, void	*obj_data)
 	return (scene->obj->data != NULL);
 }
 
-static void	get_double_element(t_scene *scene, char **array, int *flag)
+static int	find_element_name(char **array, t_scene *scene)
 {
-	if (!ft_strcmp(array[0], "sp"))
-	{
-		if (!get_obj(SPHERE, scene, new_sp(&array[1])))
-			*flag = 0;
-	}
+	if (!ft_strcmp(array[0], "A") && !scene->a)
+		return (A);
+	else if (!ft_strcmp(array[0], "C") && !scene->c)
+		return (C);
+	else if (!ft_strcmp(array[0], "L") && !scene->l)
+		return (L);
+	else if (!ft_strcmp(array[0], "sp"))
+		return (SP);
 	else if (!ft_strcmp(array[0], "pl"))
-	{
-		if (!get_obj(PLANE, scene, new_pl(&array[1])))
-			*flag = 0;
-	}
+		return (PL);
 	else if (!ft_strcmp(array[0], "cy"))
-	{
-		if (!get_obj(CYLINDER, scene, new_cy(&array[1])))
-			*flag = 0;
-	}
+		return (CY);
 	else
-		*flag = -1;
+		return (-1);
 }
 
-static int	get_element(t_scene *scene, char **array)
+static bool	get_element(char **array, t_scene *scene)
 {
-	int	capital_flag;
-	int	double_flag;
+	bool	flag;
+	int		name;
 
-	capital_flag = 1;
-	double_flag = 1;
-	if (array && !array[0])
-		return (1);
-	get_capital_element(scene, array, &capital_flag);
-	if (capital_flag == 0)
-		return (0);
-	else if (capital_flag == -1)
-	{
-		get_double_element(scene, array, &double_flag);
-		if (double_flag == 0)
-			return (0);
-		else if (double_flag == -1)
-			return (0);
-	}
-	return (1);
-}
-
-t_scene	*handle_free_scene(char *line, char **element, t_scene *scene)
-{
-	if (line)
-		free(line);
-	if (scene)
+	if (!array)
+		flag = false;
+	name = find_element_name(array, scene);
+	if (name == A && !get_el(A, scene, &array[1]))
+		flag = false;
+	else if (name == C && !get_el(C, scene, &array[1]))
+		flag = false;
+	else if (name == L && !get_el(L, scene, &array[1]))
+		flag = false;
+	else if (name == SP && !get_obj(SP, scene, new_sp(&array[1])))
+		flag = false;
+	else if (name == PL && !get_obj(PL, scene, new_pl(&array[1])))
+		flag = false;
+	else if (name == CY && !get_obj(CY, scene, new_cy(&array[1])))
+		flag = false;
+	else
+		flag = true;
+	free_array(array);
+	if (flag == false)
 		free(scene);
-	if (element)
-		free_array(element);
-	return (NULL);
+	return (flag);
 }
 
 t_scene	*get_scene(int fd)
 {
 	t_scene	*scene;
 	char	*line;
-	char	**element;
 
 	scene = malloc(sizeof(t_scene));
 	if (!scene)
@@ -137,11 +128,11 @@ t_scene	*get_scene(int fd)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		element = ft_split_pop_back(line, " \t\n");
-		if (!element || !get_element(scene, element))
-			return (handle_free_scene(line, element, scene));
+		if (!get_element(ft_split_pop_back(line, " \t\n"), scene))
+			break ;
 		free(line);
-		free_array(element);
 	}
+	if (line)
+		free(line);
 	return (scene);
 }

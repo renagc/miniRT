@@ -1,16 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_coord.c                                       :+:      :+:    :+:   */
+/*   set_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/06 19:19:04 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/09 12:29:14 by rgomes-c         ###   ########.fr       */
+/*   Created: 2023/12/18 11:18:56 by rgomes-c          #+#    #+#             */
+/*   Updated: 2023/12/18 11:23:08 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
+
+static bool	is_rgb(char *str)
+{
+	int	i;
+
+	if (ft_strlen(str) > 3)
+		return (false);
+	i = -1;
+	while (str && str[++i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (false);
+	}
+	if (ft_atoi(str) > 255)
+		return (false);
+	return (true);
+}
+
+bool	set_color(char *str, t_rgb *rgb)
+{
+	t_rgb	temp;
+	char	**array;
+	int		i;
+
+	i = -1;
+	array = ft_split_pop_back(str, ",");
+	if (!array)
+		return (NULL);
+	while (array[++i])
+	{
+		if (!is_rgb(array[i]) || ft_arraylen(array) != 3)
+		{
+			free_array(array);
+			return (false);
+		}
+	}
+	temp.r = ft_atoi(array[0]);
+	temp.g = ft_atoi(array[1]);
+	temp.b = ft_atoi(array[2]);
+	free_array(array);
+	*rgb = temp;
+	return (true);
+}
 
 int	is_double(char *str)
 {
@@ -36,31 +79,24 @@ int	is_double(char *str)
 	return (1);
 }
 
-t_coord	*get_coord(char *str)
+bool	set_coord(char *str, t_coord *coord)
 {
-	t_coord	*xyz;
 	char	**array;
 
 	array = ft_split_pop_back(str, ",");
 	if (!array)
-		return (NULL);
-	xyz = malloc(sizeof(t_coord));
-	if (!xyz || ft_arraylen(array) != 3)
+		return (false);
+	if (ft_arraylen(array) != 3)
 	{
-		if (xyz)
-			free(xyz);
 		free_array(array);
-		return (NULL);
+		return (false);
 	}
 	if (!is_double(array[0]) || !is_double(array[1]) || !is_double(array[2]))
 	{
-		free(xyz);
 		free_array(array);
-		return (NULL);
+		return (false);
 	}
-	xyz->x = ft_atoi_dbl(array[0]);
-	xyz->y = ft_atoi_dbl(array[1]);
-	xyz->z = ft_atoi_dbl(array[2]);
-	free(array);
-	return (xyz);
+	*coord = new_coord(ft_atod(array[0]), ft_atod(array[1]), ft_atod(array[2]));
+	free_array(array);
+	return (true);
 }

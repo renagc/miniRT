@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:12:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/12 16:00:56 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/18 16:41:11 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,9 @@ t_matrix	look_at(t_coord *origin, t_coord *cam_vector)
 	t_coord		right;
 	t_coord		up;
 
-	random.x = 0.0;
-	random.y = 1.0;
-	random.z = 0.0;
+	random = new_coord(0, 1, 0);
 	if (cam_vector->x == 0 && cam_vector->z == 0)
-		random.x = 1.0;
-	vec_normalize(&random);
+		random = new_coord(1, 0, 0);
 	right = cross_product(&random, cam_vector);
 	vec_normalize(&right);
 	up = cross_product(cam_vector, &right);

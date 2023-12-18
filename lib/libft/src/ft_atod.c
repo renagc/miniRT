@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi_dbl.c                                      :+:      :+:    :+:   */
+/*   ft_atod.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 14:38:35 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/06 18:55:38 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/15 15:36:00 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	loop(const char **str, int *decimal, double *res, double *div)
 	}
 }
 
-double	ft_atoi_dbl(const char *str)
+double	ft_atod(const char *str)
 {
 	double	res;
 	int		decimal;

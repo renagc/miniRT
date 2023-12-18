@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:51:14 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/10/31 11:46:36 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/18 12:04:31 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,36 +58,5 @@ t_rgb	*multiply_color(t_rgb *color, double multiply)
 	result->r = color->r * multiply;
 	result->g = color->g * multiply;
 	result->b = color->b * multiply;
-	result->a = color->a * multiply;
 	return (result);
-}
-
-void	vec_normalize(t_coord *vec)
-{
-	double	length;
-
-	length = vec_length(vec);
-	(*vec).x /= length;
-	(*vec).y /= length;
-	(*vec).z /= length;
-}
-
-double	product(t_coord *coord1, t_coord *coord2)
-{
-	double	result;
-
-	result = coord1->x * coord2->x;
-	result += coord1->y * coord2->y;
-	result += coord1->z * coord2->z;
-	return (result);
-}
-
-t_coord	cross(t_coord *a, t_coord *b)
-{
-	t_coord	c;
-
-	c.x = a->y * b->z + b->y * a->z;
-	c.y = a->x * b->z + b->x * a->z;
-	c.z = a->x * b->y + a->y * b->x;
-	return (c);
 }

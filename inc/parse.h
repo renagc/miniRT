@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:01:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/17 18:12:44 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/18 10:43:45 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ t_amb_light		*get_amb_light(char **array);
 t_light			*get_light(char **array);
 
 //get_rgc.c
-t_rgb			*get_rgb(char *str);
+bool			set_color(char *str, t_rgb *color);
 
 //get_camera.c
-int				is_coord(t_coord *coord);
+int				is_vector(t_coord *coord);
 t_camera		*get_camera(char **array);
 
-//get_coord.c
+//set_coord.c
 int				is_double(char *str);
-t_coord		*get_coord(char *str);
+bool			set_coord(char *str, t_coord *coord);
 
 //parse.c
 void			parse(int ac, char **av, t_scene **scene);

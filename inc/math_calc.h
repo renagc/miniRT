@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:01:54 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/27 10:34:54 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/18 11:22:23 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ double		*ray_intersect_sphere(t_scene *scene, t_sphere *sphere, \
 t_matrix	look_at(t_coord *origin, t_coord *cam_vector);
 t_coord		multiply_by_matrix(t_coord p, t_matrix m);
 t_coord		cross_product(t_coord *a, t_coord *b);
+t_coord		new_coord(double x, double y, double z);
 
 #endif

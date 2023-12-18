@@ -6,7 +6,7 @@
 /*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 09:06:48 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/11/19 11:39:03 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/18 10:09:40 by rgomes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	print_coord(t_coord *coord)
 {
 	if (!coord)
 		return ;
-	printf("	coord_xyz: %f, %f, %f\n", coord->x, coord->y, coord->z);
+	printf("%f, %f, %f\n", coord->x, coord->y, coord->z);
 }
 
 static void	print_color(t_rgb *rgb)
 {
 	if (!rgb)
 		return ;
-	printf("	color_rgba: %d, %d, %d, %d\n", rgb->r, rgb->g, rgb->b, rgb->a);
+	printf("%d, %d, %d\n", rgb->r, rgb->g, rgb->b);
 }
 
 static void	print_scene_camera(t_camera *camera)
@@ -33,76 +33,86 @@ static void	print_scene_camera(t_camera *camera)
 	printf("Camera ----------------------------------------------\n");
 	printf("	FOV: %d\n", camera->fov);
 	printf("	Position: ");
-	print_coord(camera->pos);
+	print_coord(&camera->pos);
 	printf("	Orientation: ");
-	print_coord(camera->ori);
+	print_coord(&camera->ori);
 }
 
 static void	print_scene_amb_light(t_amb_light *amb_light)
 {
 	if (!amb_light)
+	{
+		printf("No ambient light\n");
 		return ;
+	}
 	printf("Ambient Light ---------------------------------------\n");
 	printf("	ratio: %f\n", amb_light->ratio);
-	print_color(amb_light->color);
+	print_color(&amb_light->color);
 }
 
 static void	print_scene_light(t_light *light)
 {
 	if (!light)
 		return ;
-	printf("Lights ----------------------------------------------\n");
 	printf("	Ratio: %f\n", light->ratio);
 	printf("	Position: ");
-	print_coord(light->pos);
+	print_coord(&light->pos);
 }
 
-static void	print_scene_spheres(t_sphere *sphere)
+static void	print_sphere(t_sphere *sphere)
 {
-	printf("	Sphere:\n");
-	printf("		Position: ");
-	print_coord(sphere->pos);
-	printf("		Color: ");
-	print_color(sphere->color);
-	printf("		Diameter: %f\n", sphere->d);
+	printf(" \033[0;31mSphere\n\n");
+	printf("  Position: ");
+	print_coord(&sphere->pos);
+	printf("  Color: ");
+	print_color(&sphere->color);
+	printf("  Diameter: %f\n", sphere->d);
+	printf("\033[0m\n");
 }
 
-static void	print_scene_cylinders(t_cylinder *cylinder)
+static void	print_cylinder(t_cylinder *cylinder)
 {
-	printf("Cylinders ---------------------------------------------\n");
-	printf("	Cylinder:\n");
-	printf("		Position: ");
-	print_coord(cylinder->pos);
-	printf("		Color: ");
-	print_color(cylinder->color);
-	printf("		Diameter: %f\n", cylinder->d);
-	printf("		Height: %f\n", cylinder->h);
+	printf(" \033[0;33mCylinder\n\n");
+	printf("  Position: ");
+	print_coord(&cylinder->pos);
+	printf("  Vector: ");
+	print_coord(&cylinder->ori);
+	printf("  Color: ");
+	print_color(&cylinder->color);
+	printf("  Diameter: %f\n", cylinder->d);
+	printf("  Height: %f\n", cylinder->h);
+	printf("\033[0m\n");
 }
 
-static void	print_scene_planes(t_plane *plane)
+static void	print_plane(t_plane *plane)
 {
-	printf("planes ---------------------------------------------\n");
-	printf("		Position: ");
-	print_coord(plane->pos);
-	printf("		Orientation: ");
-	print_coord(plane->ori);
-	printf("		Color: ");
-	print_color(plane->color);
+	printf(" \033[0;34mPlane\n\n");
+	printf("  Position: ");
+	print_coord(&plane->pos);
+	printf("  Orientation: ");
+	print_coord(&plane->ori);
+	printf("  Color: ");
+	print_color(&plane->color);
+	printf("\033[0m\n");
 }
 
 void	print_objects(t_object *obj)
 {
 	t_object	*temp;
+	int			i;
 
+	i = -1;
+	printf("Objects ----------------------------------------------\n\n");
 	temp = obj;
 	while (temp)
 	{
-		if (temp->type == SPHERE)
-			print_scene_spheres(temp->data);
-		else if (temp->type == PLANE)
-			print_scene_planes(temp->data);
-		else if (temp->type == CYLINDER)
-			print_scene_cylinders(temp->data);
+		printf("Object[%d]:", ++i);
+		if (temp->type == SP)
+			print_sphere(temp->data);
+		else if (temp->type == PL)
+			print_plane(temp->data);
+		else if (temp->type == CY)
+			print_cylinder(temp->data);
 		temp = temp->next;
 	}
 }
@@ -110,7 +120,10 @@ void	print_objects(t_object *obj)
 void	debug(t_scene *scene)
 {
 	if (!scene)
+	{
+		printf("No scene to debug\n");
 		return ;
+	}
 	print_scene_amb_light(scene->a);
 	print_scene_camera(scene->c);
 	print_scene_light(scene->l);
