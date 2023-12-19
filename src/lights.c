@@ -6,7 +6,7 @@
 /*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 21:38:58 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/19 20:22:06 by qwerty           ###   ########.fr       */
+/*   Updated: 2023/12/19 23:30:06 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ double	diffuse(int type, t_coord *n, t_raytrace *rt, t_scene *scene)
 	return (i);
 }
 
+double	add_color(t_rgb *color1, t_scene *scene, double i)
+{
+	double	x;
+
+	x = i;
+	if (scene->a->color.r && color1->r)
+		return (x + scene->a->ratio);
+	if (scene->a->color.g && color1->g)
+		return (x + scene->a->ratio);
+	if (scene->a->color.b && color1->b)
+		return (x + scene->a->ratio);
+	return (x);
+}
+
 double	compute_light(t_raytrace *rt, t_coord *n, t_scene *scene)
 {
 	double		i;
@@ -39,8 +53,6 @@ double	compute_light(t_raytrace *rt, t_coord *n, t_scene *scene)
 	color = rt->closest.color;
 	type = rt->closest.type;
 	rt->closest.t = 1;
-	if (scene->a)
-		i += scene->a->ratio;
 	if (scene->l)
 	{
 		rt->ray_canvas = subtract_const(&scene->l->pos, &rt->ray_origin, 1);
@@ -52,6 +64,7 @@ double	compute_light(t_raytrace *rt, t_coord *n, t_scene *scene)
 		if (rt->closest.hit == false)
 			i += diffuse(type, n, rt, scene);
 	}
+	i = add_color(rt->closest.color, scene, i);
 	if (i > 1)
 		return (1);
 	return (i);

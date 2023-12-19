@@ -6,34 +6,37 @@
 /*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 21:01:08 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/19 20:13:59 by qwerty           ###   ########.fr       */
+/*   Updated: 2023/12/19 23:31:27 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
 
-t_rgb	*add_color(t_rgb *color1, t_rgb color2, double i)
-{
-	static t_rgb	result;
-	int				x;
+//t_rgb	*add_color(t_rgb *color1, t_rgb color2, double i, t_scene *scene)
+//{
+//	static t_rgb	result;
+//	int				x;
+//
+//	x = color2.r / (255 * i);
+//	if (x <= 1 && !scene->l)
+//		result.r = color1->r * x;
+//	else
+//		result.r = color1->r;
+//	
+//	x = color2.g / (255 * i);
+//	if (x <= 1 && !scene->l)
+//		result.g = color1->g;
+//	else
+//		result.g = color1->g * x;
+//	x = color2.b / (255 * i);
+//	if (x <= 1 && !scene->l)
+//		result.b = color1->b;
+//	else
+//		result.b = color1->b * x;
+//	return (&result);
+// add_color(rt->closest.color, scene->a->color, scene->a->ratio, scene)
+//}
 
-	x = color2.r / (255 * i);
-	if (x > 1)
-		result.r = color1->r;
-	else
-		result.r = color1->r * x;
-	x = color2.g / (255 * i);
-	if (x > 1)
-		result.g = color1->g;
-	else
-		result.g = color1->g * x;
-	x = color2.b / (255 * i);
-	if (x > 1)
-		result.b = color1->b;
-	else
-		result.b = color1->b * x;
-	return (&result);
-}
 
 t_rgb	*trace_ray(t_raytrace *rt, t_scene *scene)
 {
@@ -58,7 +61,7 @@ t_rgb	*trace_ray(t_raytrace *rt, t_scene *scene)
 	}
 	else if (rt->closest.type == CY)
 		n = get_cylinder_normal(&rt->ray_origin, rt->closest.obj);
-	return (multiply_color(add_color(rt->closest.color, scene->a->color, scene->a->ratio), compute_light(rt, &n, scene)));
+	return (multiply_color(rt->closest.color, compute_light(rt, &n, scene)));
 }
 
 void	start_ray_utils(t_raytrace *rt, int *axis, \
