@@ -1,0 +1,29 @@
+==34697== Memcheck, a memory error detector
+==34697== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==34697== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==34697== Command: ./miniRT room.rt
+==34697== Parent PID: 17691
+==34697== 
+==34697== 
+==34697== HEAP SUMMARY:
+==34697==     in use at exit: 1 bytes in 1 blocks
+==34697==   total heap usage: 254 allocs, 253 frees, 3,159 bytes allocated
+==34697== 
+==34697== 1 bytes in 1 blocks are still reachable in loss record 1 of 1
+==34697==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==34697==    by 0x1113BC: ft_strdup (in /home/qwerty/Desktop/miniRT_last/miniRT)
+==34697==    by 0x1110EC: ft_get_line (in /home/qwerty/Desktop/miniRT_last/miniRT)
+==34697==    by 0x11125A: get_next_line (in /home/qwerty/Desktop/miniRT_last/miniRT)
+==34697==    by 0x10E92D: get_scene (in /home/qwerty/Desktop/miniRT_last/miniRT)
+==34697==    by 0x10E3F7: parse (in /home/qwerty/Desktop/miniRT_last/miniRT)
+==34697==    by 0x10AC4B: main (in /home/qwerty/Desktop/miniRT_last/miniRT)
+==34697== 
+==34697== LEAK SUMMARY:
+==34697==    definitely lost: 0 bytes in 0 blocks
+==34697==    indirectly lost: 0 bytes in 0 blocks
+==34697==      possibly lost: 0 bytes in 0 blocks
+==34697==    still reachable: 1 bytes in 1 blocks
+==34697==         suppressed: 0 bytes in 0 blocks
+==34697== 
+==34697== For lists of detected and suppressed errors, rerun with: -s
+==34697== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

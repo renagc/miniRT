@@ -6,21 +6,21 @@
 /*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 10:50:53 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/12 16:52:39 by qwerty           ###   ########.fr       */
+/*   Updated: 2023/12/19 11:48:56 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
+//size_t	ft_strlen(const char *s)
+//{
+//	size_t	i;
+//
+//	i = 0;
+//	while (s[i] != '\0')
+//		i++;
+//	return (i);
+//}
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

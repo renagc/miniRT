@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:16:42 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/18 21:44:08 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:55:11 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,13 @@ typedef struct s_inter						t_inter;
 typedef struct s_matrix						t_matrix;
 typedef struct s_mlx						t_mlx;
 typedef struct s_viewport					t_viewport;
+typedef struct s_image						t_image;
 
 struct s_mlx
 {
 	void	*ref;
 	void	*win;
+	t_image	img;
 };
 
 struct s_scene

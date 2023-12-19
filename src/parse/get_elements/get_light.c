@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_light.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 22:32:55 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/18 09:20:22 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:47:40 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,14 @@ t_amb_light	*get_amb_light(char **array)
 	if (!amb)
 		return (NULL);
 	if (!set_ratio(array[0], &(amb->ratio)))
+	{
 		free(amb);
+		return (NULL);
+	}
 	else if (!set_color(array[1], &(amb->color)))
+	{
 		free(amb);
+		return(NULL);
+	}
 	return (amb);
 }

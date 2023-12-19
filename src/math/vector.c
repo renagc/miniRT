@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:51:14 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/18 12:04:31 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:50:42 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,10 @@ double	vec_length(t_coord *vec)
 
 t_rgb	*multiply_color(t_rgb *color, double multiply)
 {
-	t_rgb	*result;
+	static t_rgb	result;
 
-	result = malloc(sizeof(t_rgb));
-	result->r = color->r * multiply;
-	result->g = color->g * multiply;
-	result->b = color->b * multiply;
-	return (result);
+	result.r = color->r * multiply;
+	result.g = color->g * multiply;
+	result.b = color->b * multiply;
+	return (&result);
 }

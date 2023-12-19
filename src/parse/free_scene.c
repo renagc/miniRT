@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 23:48:56 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/18 09:35:04 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:07:44 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,40 @@
 
 void	free_mlx(t_mlx *mlx)
 {
+	if (mlx->img.reference)
+		mlx_destroy_image(mlx->ref, mlx->img.reference);
 	if (mlx->ref)
 		mlx_destroy_window(mlx->ref, mlx->win);
+	if (mlx->ref)
+	{
+		mlx_destroy_display(mlx->ref);
+		free(mlx->ref);
+	}
 }
 
 void	free_scene(t_scene *scene)
 {
 	t_object	*next;
 
+	next = NULL;
 	if (!scene)
 		return ;
-	if (scene->a)
+	if (scene && scene->a)
 		free(scene->a);
-	if (scene->c)
+	if (scene && scene->c)
 		free(scene->c);
-	if (scene->l)
-		free(scene->l);
-	next = scene->obj->next;
-	while (scene->obj)
+	if (scene && scene->l)
 	{
-		if (scene->obj->data)
-			free(scene->obj->data);
+		free(scene->l);
+	}
+	if (scene->obj)
+		next = scene->obj->next;
+	while (scene && scene->obj)
+	{
+		next = scene->obj->next;
+		free(scene->obj->data);
 		free(scene->obj);
 		scene->obj = next;
-		next = scene->obj->next;
 	}
 	free_mlx(&scene->mlx);
 	free(scene);

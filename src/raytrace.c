@@ -3,14 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   raytrace.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 21:01:08 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/18 21:38:53 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:24:14 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minirt.h>
+
+t_rgb	*add_color(t_rgb color1, t_rgb color2, double i)
+{
+	static t_rgb	result;
+	int				x;
+
+	if (color1.r != 0)
+	{
+		x = color1.r + (color2.r * i);
+		if (x > 255)
+			result.r = 255;
+		else
+			result.r = x;
+	}
+	else
+		result.r = color1.r;
+	if (color1.g != 0)
+	{
+		x = color1.g + (color2.g * i);
+		if (x > 255)
+			result.g = 255;
+		else
+			result.g = x;
+	}
+	else
+		result.g = color1.g;
+	if (color1.b != 0)
+	{
+		x = color1.b + (color2.b * i);
+		if (x > 255)
+			result.b = 255;
+		else
+			result.b = x;
+	}
+	else
+		result.b = color1.b;
+	return (&result);
+}
 
 t_rgb	*trace_ray(t_raytrace *rt, t_scene *scene)
 {
@@ -35,7 +73,7 @@ t_rgb	*trace_ray(t_raytrace *rt, t_scene *scene)
 	}
 	else if (rt->closest.type == CY)
 		n = get_cylinder_normal(&rt->ray_origin, rt->closest.obj);
-	return (multiply_color(rt->closest.color, compute_light(rt, &n, scene)));
+	return (multiply_color(add_color(*rt->closest.color, scene->a->color, scene->a->ratio), compute_light(rt, &n, scene)));
 }
 
 void	start_ray_utils(t_raytrace *rt, int *axis, \
@@ -50,7 +88,6 @@ void	start_ray_utils(t_raytrace *rt, int *axis, \
 void	start_ray(t_scene *scene, t_raytrace *rt)
 {
 	int			axis[2];
-	t_image		img;
 	t_viewport	vp;
 	t_matrix	m;
 	t_coord		vec;
@@ -58,7 +95,7 @@ void	start_ray(t_scene *scene, t_raytrace *rt)
 	vec = new_coord(0, 0, 0);
 	m = look_at(&scene->c->pos, &scene->c->ori);
 	vp = get_viewport_dimensions(scene->c->fov);
-	img = ft_new_image(scene->mlx.ref, C_W, C_H);
+	scene->mlx.img = ft_new_image(scene->mlx.ref, C_W, C_H);
 	axis[0] = - (C_W / 2) - 1;
 	while (++axis[0] < (C_W / 2))
 	{
@@ -67,12 +104,13 @@ void	start_ray(t_scene *scene, t_raytrace *rt)
 		{
 			rt->ray_origin = multiply_by_matrix(vec, m);
 			start_ray_utils(rt, axis, vp, m);
-			turn_pixel_to_color(&img.pixels[(axis[0] + C_W / 2) * 4 \
-				+ img.line_size * (-axis[1] + C_H / 2)], trace_ray(rt, scene));
+			turn_pixel_to_color(&scene->mlx.img.pixels[(axis[0] + C_W / 2) * 4 \
+				+ scene->mlx.img.line_size * \
+				(-axis[1] + C_H / 2)], trace_ray(rt, scene));
 		}
 	}
 	mlx_put_image_to_window(scene->mlx.ref, scene->mlx.win, \
-		img.reference, 0, 0);
+		scene->mlx.img.reference, 0, 0);
 }
 
 void	closest_intersection(double t_min, double t_max, \

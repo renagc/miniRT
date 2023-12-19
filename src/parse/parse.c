@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:02:28 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/17 19:52:47 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:30:44 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	exit_program(char *error_msg, t_scene *scene)
 	}
 	if (scene)
 	{
-		free(scene);
+		free_scene(scene);
 	}
 	exit(1);
 }
@@ -59,6 +59,6 @@ void	parse(int ac, char **av, t_scene **scene)
 		exit_program("File not found", *scene);
 	*scene = get_scene(fd);
 	close(fd);
-	if (!scene)
+	if (!(*scene))
 		exit_program("Scene Error", *scene);
 }

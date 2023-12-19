@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_scene.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 12:18:27 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/18 10:59:35 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:02:04 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,13 @@ bool	get_obj(int type, t_scene *scene, void	*obj_data)
 		temp->next->data = obj_data;
 		temp->next->next = NULL;
 	}
-	return (scene->obj->data != NULL);
+	return (obj_data);
 }
 
 static int	find_element_name(char **array, t_scene *scene)
 {
+	if (!array[0])
+		return (-2);
 	if (!ft_strcmp(array[0], "A") && !scene->a)
 		return (A);
 	else if (!ft_strcmp(array[0], "C") && !scene->c)
@@ -88,10 +90,13 @@ static bool	get_element(char **array, t_scene *scene)
 	bool	flag;
 	int		name;
 
-	if (!array)
-		flag = false;
+	flag = true;
 	name = find_element_name(array, scene);
-	if (name == A && !get_el(A, scene, &array[1]))
+	if (name == -1)
+		flag = false;
+	else if (name == -2)
+		flag = true;
+	else if (name == A && !get_el(A, scene, &array[1]))
 		flag = false;
 	else if (name == C && !get_el(C, scene, &array[1]))
 		flag = false;
@@ -103,11 +108,9 @@ static bool	get_element(char **array, t_scene *scene)
 		flag = false;
 	else if (name == CY && !get_obj(CY, scene, new_cy(&array[1])))
 		flag = false;
-	else
-		flag = true;
 	free_array(array);
 	if (flag == false)
-		free(scene);
+		free_scene(scene);
 	return (flag);
 }
 
@@ -116,6 +119,9 @@ t_scene	*get_scene(int fd)
 	t_scene	*scene;
 	char	*line;
 
+	line = get_next_line(fd);
+	if (!line)
+		return (NULL);
 	scene = malloc(sizeof(t_scene));
 	if (!scene)
 		return (NULL);
@@ -123,16 +129,27 @@ t_scene	*get_scene(int fd)
 	scene->c = NULL;
 	scene->l = NULL;
 	scene->obj = NULL;
+	scene->mlx.ref = NULL;
+	scene->mlx.win = NULL;
+	scene->mlx.img.reference = NULL;
 	while (1)
 	{
-		line = get_next_line(fd);
 		if (!line)
 			break ;
 		if (!get_element(ft_split_pop_back(line, " \t\n"), scene))
 			break ;
 		free(line);
+		line = get_next_line(fd);
 	}
 	if (line)
+	{
 		free(line);
+		return (NULL);
+	}
+	if (!scene->c)
+	{
+		free_scene(scene);
+		return (NULL);
+	}
 	return (scene);
 }

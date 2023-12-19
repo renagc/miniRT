@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgomes-c <rgomes-c@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:23:41 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/18 21:33:34 by rgomes-c         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:13:18 by qwerty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,39 @@ t_coord	get_cylinder_normal(t_coord *point, \
 	return (normal);
 }
 
+void	open_window(t_scene **scene)
+{
+	*scene = malloc(sizeof(t_scene));
+	if (!(*scene))
+		return ;
+	(*scene)->a = NULL;
+	(*scene)->l = NULL;
+	(*scene)->c = NULL;
+	(*scene)->obj = NULL;
+	(*scene)->mlx.ref = mlx_init();
+	(*scene)->mlx.win = mlx_new_window((*scene)->mlx.ref, C_W, C_H, "No file");
+	(*scene)->mlx.img.reference = NULL;
+}
+
 int	main(int ac, char **av)
 {
 	t_scene		*scene;
 	t_raytrace	rt;
 
 	scene = NULL;
-	parse(ac, av, &scene);
-	scene->mlx.ref = mlx_init();
-	scene->mlx.win = mlx_new_window(scene->mlx.ref, C_W, C_H, "Test");
+	if (ac != 1)
+	{
+		parse(ac, av, &scene);
+		scene->mlx.ref = mlx_init();
+		scene->mlx.win = mlx_new_window(scene->mlx.ref, C_W, C_H, av[1]);
+		start_ray(scene, &rt);
+	}
+	else
+		open_window(&scene);
 	debug(scene);
-	start_ray(scene, &rt);
-	mlx_hook(scene->mlx.win, X_WINBUTTON, 1L << 3, &ft_xbutton, &scene);
-	mlx_hook(scene->mlx.win, KEY_PRESS, 1, ft_escbutton, &scene);
-	mlx_hook(scene->mlx.win, KEY_RELEASE, 1, ft_escbutton, &scene);
+	mlx_hook(scene->mlx.win, X_WINBUTTON, 1L << 3, &ft_xbutton, scene);
+	mlx_hook(scene->mlx.win, KEY_PRESS, 1, ft_escbutton, scene);
+	mlx_hook(scene->mlx.win, KEY_RELEASE, 1, ft_escbutton, scene);
 	mlx_loop(scene->mlx.ref);
 	return (0);
 }
