@@ -244,6 +244,7 @@ t_coord		canvas_to_viewport(double cx, double cy, t_viewport view);
 t_viewport	get_viewport_dimensions(int fov);
 t_coord		get_cylinder_normal(t_coord *point, \
 			t_cylinder *cylinder);
+t_scene *free_element(char *line, t_scene *scene);
 
 
 

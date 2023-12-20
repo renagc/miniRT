@@ -19,7 +19,6 @@ LIBFT_A		=	lib/libft/libft.a
 
 #Source files
 SRC			=	src/main.c \
-				src/debug.c \
 				src/utils.c \
 				src/math/math_1.c \
 				src/math/vector.c \

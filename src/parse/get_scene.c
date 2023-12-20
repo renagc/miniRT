@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_scene.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qwerty <qwerty@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gseco-lu <gseco-lu@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 12:18:27 by rgomes-c          #+#    #+#             */
-/*   Updated: 2023/12/19 17:02:04 by qwerty           ###   ########.fr       */
+/*   Updated: 2023/12/20 12:03:29 by gseco-lu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,24 +132,12 @@ t_scene	*get_scene(int fd)
 	scene->mlx.ref = NULL;
 	scene->mlx.win = NULL;
 	scene->mlx.img.reference = NULL;
-	while (1)
+	while (line)
 	{
-		if (!line)
-			break ;
 		if (!get_element(ft_split_pop_back(line, " \t\n"), scene))
-			break ;
+			return (free_element(line, scene));
 		free(line);
 		line = get_next_line(fd);
-	}
-	if (line)
-	{
-		free(line);
-		return (NULL);
-	}
-	if (!scene->c)
-	{
-		free_scene(scene);
-		return (NULL);
 	}
 	return (scene);
 }
