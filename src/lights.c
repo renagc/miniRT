@@ -64,7 +64,8 @@ double	compute_light(t_raytrace *rt, t_coord *n, t_scene *scene)
 		if (rt->closest.hit == false)
 			i += diffuse(type, n, rt, scene);
 	}
-	i = add_color(rt->closest.color, scene, i);
+	if (scene->a)
+		i = add_color(rt->closest.color, scene, i);
 	if (i > 1)
 		return (1);
 	return (i);

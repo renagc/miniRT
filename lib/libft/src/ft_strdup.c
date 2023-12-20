@@ -18,6 +18,8 @@ char	*ft_strdup(const char *s1)
 	char	*scpy;
 
 	i = 0;
+	if (!s1 || !s1[0])
+		return (NULL);
 	while (s1[i] != '\0')
 		i++;
 	scpy = malloc(i * sizeof(char) + 1);

@@ -10,7 +10,7 @@ NAME = miniRT
 
 #Compiler flags
 CC = @cc
-CFLAGS = -Wall -Wextra -Werror -I$(INC) -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -I$(INC) #-fsanitize=address -g
 RM = @rm -rf
 
 #libft

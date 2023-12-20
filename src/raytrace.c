@@ -12,32 +12,6 @@
 
 #include <minirt.h>
 
-//t_rgb	*add_color(t_rgb *color1, t_rgb color2, double i, t_scene *scene)
-//{
-//	static t_rgb	result;
-//	int				x;
-//
-//	x = color2.r / (255 * i);
-//	if (x <= 1 && !scene->l)
-//		result.r = color1->r * x;
-//	else
-//		result.r = color1->r;
-//	
-//	x = color2.g / (255 * i);
-//	if (x <= 1 && !scene->l)
-//		result.g = color1->g;
-//	else
-//		result.g = color1->g * x;
-//	x = color2.b / (255 * i);
-//	if (x <= 1 && !scene->l)
-//		result.b = color1->b;
-//	else
-//		result.b = color1->b * x;
-//	return (&result);
-// add_color(rt->closest.color, scene->a->color, scene->a->ratio, scene)
-//}
-
-
 t_rgb	*trace_ray(t_raytrace *rt, t_scene *scene)
 {
 	t_coord		n;

@@ -88,7 +88,6 @@ int	main(int ac, char **av)
 	}
 	else
 		open_window(&scene);
-	debug(scene);
 	mlx_hook(scene->mlx.win, X_WINBUTTON, 1L << 3, &ft_xbutton, scene);
 	mlx_hook(scene->mlx.win, KEY_PRESS, 1, ft_escbutton, scene);
 	mlx_hook(scene->mlx.win, KEY_RELEASE, 1, ft_escbutton, scene);

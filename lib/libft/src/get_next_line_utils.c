@@ -50,25 +50,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (sj);
 }
 
-char	*ft_strdup(const char *s1)
-{
-	int		i;
-	char	*scpy;
-
-	i = 0;
-	while (s1[i] != '\0')
-		i++;
-	scpy = malloc(i * sizeof(char) + 1);
-	if (!scpy)
-		return (0);
-	while (i >= 0)
-	{
-		scpy[i] = s1[i];
-		i--;
-	}
-	return (scpy);
-}
-
 int	check_end_line(char *str)
 {
 	int		i;

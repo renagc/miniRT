@@ -81,7 +81,7 @@ t_amb_light	*get_amb_light(char **array)
 	else if (!set_color(array[1], &(amb->color)))
 	{
 		free(amb);
-		return(NULL);
+		return (NULL);
 	}
 	return (amb);
 }
