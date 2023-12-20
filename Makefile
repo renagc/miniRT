@@ -15,6 +15,7 @@ RM = @rm -rf
 
 #libft
 LIBFT_DIR	=	lib/libft/
+MLIBX_DIR	=	lib/minilibx/
 LIBFT_A		=	lib/libft/libft.a
 
 #Source files
@@ -60,6 +61,8 @@ $(NAME): $(OBJ)
 	@echo "$(BLACK)Compiling libft...$(COLOUR_END)"
 	@make --silent -C $(LIBFT_DIR)
 	@echo "$(GREEN)libft successfully compiled.$(COLOUR_END)"
+	@make --silent -C $(MLIBX_DIR)
+	@echo "$(GREEN)minilibx successfully compiled.$(COLOUR_END)"
 	@echo "$(BLACK)Compiling $(NAME)...$(COLOUR_END)"
 	@$(CC) $(CFLAGS) -o $(@) -I/usr/local/include $(^) $(O_FLAGS) $(LIBFT_A)
 	@echo "$(GREEN)$(NAME) successfully compiled.$(COLOUR_END)"
